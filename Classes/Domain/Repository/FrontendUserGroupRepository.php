@@ -24,27 +24,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Tollwerk\TwUser\Utility;
+namespace Tollwerk\TwUser\Domain\Repository;
 
 
-use TYPO3\CMS\Core\SingletonInterface;
-
-class PasswordUtility implements SingletonInterface
+class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
 {
-    /**
-     * @param int $length
-     * @param string $keySpace
-     *
-     * @return string
-     */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
-    {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
-    }
 
 }

@@ -1,0 +1,20 @@
+config.tx_extbase.persistence.classes {
+    #   # TODO: Check what this is good for
+    #    TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+    #        subclasses {
+    #            attendee = \Tollwerk\TwUser\Domain\Model\FrontendUser
+    #        }
+    #    }
+
+    Tollwerk\TwUser\Domain\Model\FrontendUser.mapping {
+        tableName = fe_users
+        columns {
+            tx_twuser_registration_code.mapOnProperty = registrationCode
+            disable.mapOnProperty = disabled
+        }
+    }
+
+    Tollwerk\TwUser\Domain\Model\FrontendUserGroup.mapping {
+        tableName = fe_groups
+    }
+}

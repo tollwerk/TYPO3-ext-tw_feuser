@@ -27,6 +27,7 @@
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
+use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -68,6 +69,9 @@ class RegistrationFormFactory extends AbstractFormFactory
         $email->setLabeL($this->translate('feuser.registration.form.email'));
         $email->setProperty('fluidAdditionalAttributes', ['placeholder' => $this->translate('feuser.registration.form.email.placeholder')]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
+
+        // Add finishers
+        $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));
 
         // Return everything
         $this->triggerFormBuildingFinished($form);

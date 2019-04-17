@@ -1,0 +1,20 @@
+plugin.tx_twuser {
+    persistence {
+        storagePid = {$plugin.tw_geo.persistence.storagePid}
+    }
+
+    view {
+        templateRootPath = {$plugin.tw_geo.view.templateRootPath}
+        partialRootPath = {$plugin.tw_geo.view.partialRootPath}
+        layoutRootPath = {$plugin.tw_geo.view.layoutRootPath}
+    }
+
+    settings {
+        feuser {
+            registration {
+                pid = {$plugin.tw_user.settings.feuser.registration.pid}
+                groupUid = {$plugin.tw_user.settings.feuser.registration.groupUid}
+            }
+        }
+    }
+}

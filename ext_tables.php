@@ -9,7 +9,7 @@ call_user_func(
         // Add static TypoScript files
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
             'tw_user',
-            'Configuration/TypoScript/Static',
+            'Configuration/TypoScript',
             'tollwerk User Tools'
         );
 

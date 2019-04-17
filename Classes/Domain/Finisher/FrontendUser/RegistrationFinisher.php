@@ -24,27 +24,22 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Tollwerk\TwUser\Utility;
+namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Tollwerk\TwUser\Utility\FrontendUserUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
-class PasswordUtility implements SingletonInterface
+class RegistrationFinisher extends RedirectFinisher
 {
-    /**
-     * @param int $length
-     * @param string $keySpace
-     *
-     * @return string
-     */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
+    public function executeInternal()
     {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
-    }
+        // Get some objects and properties
+        $formRuntime = $this->finisherContext->getFormRuntime();
+        $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
 
+        // Create FrontendUser
+        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'));
+    }
 }

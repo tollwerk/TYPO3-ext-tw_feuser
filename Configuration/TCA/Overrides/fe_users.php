@@ -3,7 +3,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2019 Klaus Fiedler <klaus@tollwerk.de>, tollwerk® GmbH
+ *  (c) 2018 Klaus Fiedler <klaus@tollwerk.de>, tollwerk® GmbH
  *
  *  All rights reserved
  *
@@ -24,27 +24,20 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Tollwerk\TwUser\Utility;
-
-
-use TYPO3\CMS\Core\SingletonInterface;
-
-class PasswordUtility implements SingletonInterface
-{
-    /**
-     * @param int $length
-     * @param string $keySpace
-     *
-     * @return string
-     */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
-    {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
-    }
-
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
 }
+
+
+// Add new columns
+$newColumns = [
+    'tx_twuser_registration_code' => [
+        'exclude' => true,
+        'config' => [
+            'type' => 'passthrough',
+        ]
+    ],
+];
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $newColumns);
+

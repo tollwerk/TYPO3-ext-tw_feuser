@@ -1,0 +1,31 @@
+# customsubcategory=common=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:common
+# customsubcategory=file=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:file
+# customsubcategory=feuser=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser
+
+plugin.tx_twuser {
+
+    persistence {
+        # cat=plugin.tx_twuser/common/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:common.storagePid
+        storagePid =
+    }
+
+    view {
+        # cat=plugin.tx_twuser/file/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:file.templateRootPath
+        templateRootPath = EXT:tw_user/Resources/Private/Templates/
+        # cat=plugin.tx_twuser/file/0011; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:file.partialRootPath
+        partialRootPath = EXT:tw_user/Resources/Private/Partials/
+        # cat=plugin.tx_twuser/file/0012; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:file.layoutRootPath
+        layoutRootPath = EXT:tw_user/Resources/Private/Layouts/
+    }
+
+    settings {
+        feuser {
+            registration {
+                # cat=plugin.tx_twuser/feuser.registration/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.pid
+                pid = 0
+                # cat=plugin.tx_twuser/feuser.registration/0020; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.groupUid
+                groupUid = 0
+            }
+        }
+    }
+}

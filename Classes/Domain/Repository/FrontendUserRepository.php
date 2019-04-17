@@ -24,27 +24,28 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Tollwerk\TwUser\Utility;
+namespace Tollwerk\TwUser\Domain\Repository;
 
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Tollwerk\TwUser\Domain\Model\FrontendUser;
 
-class PasswordUtility implements SingletonInterface
+class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 {
     /**
-     * @param int $length
-     * @param string $keySpace
+     * @param string $username
+     * @param bool $ignoreEnableFields
      *
-     * @return string
+     * @return null|FrontendUser
      */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
+    public function findOneByUsername(string $username, bool $ignoreEnableFields = false): ?FrontendUser
     {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields($ignoreEnableFields)->setEnableFieldsToBeIgnored(['disabled','starttime','endtime']);
+        $constraints = [
+            $query->equals('username', $username),
+        ];
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        $result = $query->matching($query->logicalAnd($constraints))->execute();
+        return $result->count() ? $result->getFirst() : null;
     }
-
 }

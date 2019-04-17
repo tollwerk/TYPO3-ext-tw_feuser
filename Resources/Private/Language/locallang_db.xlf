@@ -3,6 +3,7 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z" product-name="tw_user">
         <header/>
         <body>
+            <!-- Typoscript constant editor -->
             <trans-unit id="file">
                 <source>Files and folders</source>
             </trans-unit>
@@ -15,6 +16,23 @@
             <trans-unit id="file.partialRootPath">
                 <source>Partial Root Path</source>
             </trans-unit>
+            <trans-unit id="common">
+                <source>Common</source>
+            </trans-unit>
+            <trans-unit id="common.storagePid">
+                <source>Storage PID</source>
+            </trans-unit>
+            <trans-unit id="feuser">
+                <source>Frontend User</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.pid">
+                <source>Registration | pid</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.groupUid">
+                <source>Registration | Group uid</source>
+            </trans-unit>
+
+            <!-- Plugin: FeuserRegistration -->
             <trans-unit id="plugin.feuser.registration">
                 <source>tollwerk User | Frontend User Registration</source>
             </trans-unit>

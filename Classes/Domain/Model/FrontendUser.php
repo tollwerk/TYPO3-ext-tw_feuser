@@ -24,27 +24,49 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Tollwerk\TwUser\Utility;
+namespace Tollwerk\TwUser\Domain\Model;
 
-
-use TYPO3\CMS\Core\SingletonInterface;
-
-class PasswordUtility implements SingletonInterface
+class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 {
     /**
-     * @param int $length
-     * @param string $keySpace
-     *
-     * @return string
+     * @var bool
      */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
+    protected $disabled = true;
+
+    /**
+     * @var string
+     */
+    protected $registrationCode = '';
+
+    /**
+     * @return bool
+     */
+    public function getDisabled(): bool
     {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
+        return $this->disabled;
     }
 
+    /**
+     * @param bool $disabled
+     */
+    public function setDisabled(bool $disabled)
+    {
+        $this->disabled = $disabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegistrationCode(): string
+    {
+        return $this->registrationCode;
+    }
+
+    /**
+     * @param string $registrationCode
+     */
+    public function setRegistrationCode(string $registrationCode)
+    {
+        $this->registrationCode = $registrationCode;
+    }
 }
