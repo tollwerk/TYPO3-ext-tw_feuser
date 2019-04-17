@@ -1,0 +1,24 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <main>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <doubleOptInt>
+                        <TCEforms>
+                            <label>LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:plugin.feuser.registration.doubleOptIn</label>
+                            <config>
+                                <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </doubleOptInt>
+                </el>
+            </ROOT>
+        </main>
+    </sheets>
+</T3DataStructure>
+
+

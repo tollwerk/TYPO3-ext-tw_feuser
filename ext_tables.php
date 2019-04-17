@@ -16,7 +16,7 @@ call_user_func(
         // Register plugins
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
             'Tollwerk.TwUser',
-            'feuserRegistration',
+            'FeuserRegistration',
             'LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:plugin.feuser.registration',
             'EXT:tw_user/Resources/Public/Icons/Backend/FrontendUser.svg'
         );

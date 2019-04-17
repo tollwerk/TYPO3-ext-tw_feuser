@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z" product-name="tw_user">
+        <header/>
+        <body>
+            <trans-unit id="feuser.registration.form.email">
+                <source>Email</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.email.placeholder">
+                <source>john@doe.com</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.submit">
+                <source>Register now</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
