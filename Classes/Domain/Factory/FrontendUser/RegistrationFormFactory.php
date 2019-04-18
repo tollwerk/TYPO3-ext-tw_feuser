@@ -26,12 +26,11 @@
 
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
+use Tollwerk\TwBase\Domain\Validator\UniqueObjectValidator;
+use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
@@ -61,17 +60,25 @@ class RegistrationFormFactory extends AbstractFormFactory
         $form = parent::build($configuration, $prototypeName);
         $form->setRenderingOption('controllerAction', 'registration');
         $form->setRenderingOption('submitButtonLabel', $this->translate('feuser.registration.form.submit'));
+        $form->setRenderingOption('elementClassAttribute', 'UserRegistration__form Form');
 
         // Create page and form fields
         $page = $form->createPage('registration');
-
         $email = $page->createElement('email', 'Email');
         $email->setLabeL($this->translate('feuser.registration.form.email'));
         $email->setProperty('fluidAdditionalAttributes', ['placeholder' => $this->translate('feuser.registration.form.email.placeholder')]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
+            'table' => 'fe_users',
+            'fieldname' => 'username',
+        ]));
 
         // Add finishers
         $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));
+        $form->createFinisher('Redirect', [
+            'pageUid' => $GLOBALS['TSFE']->id,
+            'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
+        ]);
 
         // Return everything
         $this->triggerFormBuildingFinished($form);

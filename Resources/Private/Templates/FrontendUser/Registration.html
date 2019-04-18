@@ -3,6 +3,14 @@
       xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-    <f:render partial="FrontendUser/Registration/Form" arguments="{_all}"/>
+    <div class="UserRegistration">
+        <f:flashMessages/>
+        <f:if condition="{registrationStatus}">
+            <f:else>
+                <f:comment><!-- Show registration form if no status is given--></f:comment>
+                <f:render partial="FrontendUser/Registration/Form" arguments="{_all}"/>
+            </f:else>
+        </f:if>
+    </div>
 
 </html>

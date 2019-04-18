@@ -40,9 +40,26 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByUsername(string $username, bool $ignoreEnableFields = false): ?FrontendUser
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields($ignoreEnableFields)->setEnableFieldsToBeIgnored(['disabled','starttime','endtime']);
+        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields($ignoreEnableFields)->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
         $constraints = [
             $query->equals('username', $username),
+        ];
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        $result = $query->matching($query->logicalAnd($constraints))->execute();
+        return $result->count() ? $result->getFirst() : null;
+    }
+
+    /**
+     * @param $registrationCode
+     *
+     * @return null|FrontendUser
+     */
+    public function findOneByRegistrationCode($registrationCode)
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields(true)->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
+        $constraints = [
+            $query->equals('registrationCode', $registrationCode),
         ];
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
         $result = $query->matching($query->logicalAnd($constraints))->execute();

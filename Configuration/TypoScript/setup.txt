@@ -4,16 +4,22 @@ plugin.tx_twuser {
     }
 
     view {
-        templateRootPath = {$plugin.tw_geo.view.templateRootPath}
-        partialRootPath = {$plugin.tw_geo.view.partialRootPath}
-        layoutRootPath = {$plugin.tw_geo.view.layoutRootPath}
+        templateRootPath = {$plugin.tx_twuser.view.templateRootPath}
+        partialRootPath = {$plugin.tx_twuser.view.partialRootPath}
+        layoutRootPath = {$plugin.tx_twuser.view.layoutRootPath}
     }
 
     settings {
+        email {
+            senderAddress = {$plugin.tx_twuser.settings.email.senderAddress}
+            senderName = {$plugin.tx_twuser.settings.email.senderName}
+        }
+
         feuser {
             registration {
-                pid = {$plugin.tw_user.settings.feuser.registration.pid}
-                groupUid = {$plugin.tw_user.settings.feuser.registration.groupUid}
+                pid = {$plugin.tx_twuser.settings.feuser.registration.pid}
+                groupUid = {$plugin.tx_twuser.settings.feuser.registration.groupUid}
+                pluginPid = {$plugin.tx_twuser.settings.feuser.registration.pluginPid}
             }
         }
     }

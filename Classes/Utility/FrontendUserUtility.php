@@ -26,6 +26,8 @@
 
 namespace Tollwerk\TwUser\Utility;
 
+use Tollwerk\TwBase\Utility\EmailUtility;
+use Tollwerk\TwBase\Utility\StandaloneRenderer;
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserGroupRepository;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
@@ -33,9 +35,11 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class FrontendUserUtility implements SingletonInterface
 {
@@ -57,14 +61,14 @@ class FrontendUserUtility implements SingletonInterface
     protected $settings = [];
 
     /**
-     * @param string $email
-     * @param int $uid
+     * @param FrontendUser $frontendUser
      *
      * @return string
+     *
      */
-    protected function createRegistrationCode(string $email, int $uid)
+    protected function createRegistrationCode(FrontendUser $frontendUser)
     {
-        return md5($email . $uid . time());
+        return md5($frontendUser->getEmail().$frontendUser->getUid().time());
     }
 
     /**
@@ -111,15 +115,51 @@ class FrontendUserUtility implements SingletonInterface
         }
 
         // Set registration confirmation code and update user
-        $frontendUser->setRegistrationCode($this->createRegistrationCode($frontendUser->getEmail(), $frontendUser->getUid()));
+        $frontendUser->setRegistrationCode($this->createRegistrationCode($frontendUser));
         $this->frontendUserRepository->update($frontendUser);
         $this->persistenceManager->persistAll();
 
         // Send confirmation email
-
-
-
-        die();
-        return false;
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $confirmationUri = $uriBuilder
+            ->reset()
+            ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
+            ->setCreateAbsoluteUri(true)
+            ->uriFor(
+                'confirmRegistration',
+                [
+                    'code' => $frontendUser->getRegistrationCode(),
+                ],
+                'FrontendUser',
+                'TwUser',
+                'FeuserRegistration'
+            );
+        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
+        $emailUtility = $this->objectManager->get(EmailUtility::class, $this->settings['email']['senderName'], $this->settings['email']['senderAddress']);
+        $emailUtility->send(
+            [$frontendUser->getEmail()],
+            LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
+            $standaloneRenderer->render(
+                'Email/FrontendUser/Registration',
+                [
+                    'confirmationUri' => $confirmationUri,
+                    'username' => $frontendUser->getUsername(),
+                    'password' => $password,
+                ],
+                'html',
+                'Html'
+            ),
+            $standaloneRenderer->render(
+                'Email/FrontendUser/Registration',
+                [
+                    'confirmationUri' => $confirmationUri,
+                    'username' => $frontendUser->getUsername(),
+                    'password' => $password,
+                ],
+                'html',
+                'Plaintext'
+            )
+        );
+        return true;
     }
 }

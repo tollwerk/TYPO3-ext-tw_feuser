@@ -26,11 +26,14 @@
 
 namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
-
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
+/**
+ * Class RegistrationFinisher
+ * @package Tollwerk\TwUser\Domain\Finisher\FrontendUser
+ */
 class RegistrationFinisher extends RedirectFinisher
 {
     public function executeInternal()

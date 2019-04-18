@@ -4,6 +4,6 @@
 
 TYPO3 Frontend and backend user tools
 
-## Features
+## Features overview
 
 * Frontend User Registration

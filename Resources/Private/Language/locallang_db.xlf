@@ -26,10 +26,22 @@
                 <source>Frontend User</source>
             </trans-unit>
             <trans-unit id="feuser.registration.pid">
-                <source>Registration | pid</source>
+                <source>Registration | The pid for fe_user records</source>
             </trans-unit>
             <trans-unit id="feuser.registration.groupUid">
-                <source>Registration | Group uid</source>
+                <source>Registration | The feuser group uid</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.pluginPid">
+                <source>Registration | The Page with registration plugin</source>
+            </trans-unit>
+            <trans-unit id="email">
+                <source>Email</source>
+            </trans-unit>
+            <trans-unit id="email.senderAddress">
+                <source>Sender Address</source>
+            </trans-unit>
+            <trans-unit id="email.senderName">
+                <source>Sender Name</source>
             </trans-unit>
 
             <!-- Plugin: FeuserRegistration -->
@@ -37,7 +49,7 @@
                 <source>tollwerk User | Frontend User Registration</source>
             </trans-unit>
             <trans-unit id="plugin.feuser.registration.doubleOptIn">
-                <source>Enalbe double opt in</source>
+                <source>Enable Double-Opt-In</source>
             </trans-unit>
         </body>
     </file>
