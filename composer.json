@@ -1,0 +1,26 @@
+{
+  "name": "tollwerk/tw-user",
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 frontend user regustration & login incl. double opt-in flow",
+  "homepage": "https://github.com/tollwerk/TYPO3-ext-tw_componentlibrary",
+  "license": "GPL-2.0+",
+  "autoload": {
+    "psr-4": {
+      "Tollwerk\\TwUser\\": "Classes/"
+    }
+  },
+  "replace": {
+    "tw_user": "self.version",
+    "typo3-ter/tw_user": "self.version"
+  },
+  "authors": [
+    {
+      "name": "Klaus Fiedler",
+      "email": "klaus@tollwerk.de"
+    },
+    {
+      "name": "Joschi Kuphal",
+      "email": "joschi@tollwerk.de"
+    }
+  ]
+}
