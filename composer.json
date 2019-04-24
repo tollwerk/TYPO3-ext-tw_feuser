@@ -1,7 +1,7 @@
 {
   "name": "tollwerk/tw-user",
   "type": "typo3-cms-extension",
-  "description": "TYPO3 frontend user regustration & login incl. double opt-in flow",
+  "description": "TYPO3 frontend user registration & login including double opt-in flow",
   "homepage": "https://github.com/tollwerk/TYPO3-ext-tw_componentlibrary",
   "license": "GPL-2.0+",
   "autoload": {
@@ -22,5 +22,8 @@
       "name": "Joschi Kuphal",
       "email": "joschi@tollwerk.de"
     }
-  ]
+  ],
+  "require": {
+    "tollwerk/tw-base": ">=2.3.0"
+  }
 }
