@@ -28,6 +28,7 @@ namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
 /**
@@ -43,6 +44,9 @@ class RegistrationFinisher extends RedirectFinisher
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
 
         // Create FrontendUser
-        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'));
+        $frontendUserUtility->createFrontendUser(
+            $formRuntime->getElementValue('email'),
+            $formRuntime->getElementValue('passthrough')
+        );
     }
 }

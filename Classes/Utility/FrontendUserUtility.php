@@ -85,10 +85,11 @@ class FrontendUserUtility implements SingletonInterface
 
     /**
      * @param string $email
+     * @param array $passthrough
      *
      * @return bool
      */
-    public function createFrontendUser(string $email): bool
+    public function createFrontendUser(string $email, array $passthrough = []): bool
     {
         // Check if user already exists. If not, create one.
         $frontendUser = $this->frontendUserRepository->findOneByUsername($email, true);
@@ -129,6 +130,7 @@ class FrontendUserUtility implements SingletonInterface
                 'confirmRegistration',
                 [
                     'code' => $frontendUser->getRegistrationCode(),
+                    'passthrough' => $passthrough,
                 ],
                 'FrontendUser',
                 'TwUser',

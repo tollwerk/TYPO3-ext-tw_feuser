@@ -3,6 +3,11 @@
       xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-    <formvh:render factoryClass="Tollwerk\TwUser\Domain\Factory\FrontendUser\RegistrationFormFactory"/>
+    <f:variable name="pt" value="{event: 666}"/>
+
+    <formvh:render
+        factoryClass="Tollwerk\TwUser\Domain\Factory\FrontendUser\RegistrationFormFactory"
+        overrideConfiguration="{passthrough: pt}"
+    />
 
 </html>

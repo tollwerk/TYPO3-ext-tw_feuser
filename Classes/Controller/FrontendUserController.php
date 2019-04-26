@@ -30,6 +30,7 @@ namespace Tollwerk\TwUser\Controller;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
@@ -72,10 +73,14 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
-     * @param string $status
+     * @param string $status     The registration status
+     * @param array $passthrough See \Tollwerk\TwUser\Domain\Factory\AbstractFormFactory
+     * @param array $form        The submitted form data
      */
-    public function registrationAction(string $status = null)
+    public function registrationAction(string $status = null, array $passthrough = null, array $form = null)
     {
+        $passthrough = $passthrough ?? (!empty($form['passthrough']) ? $form['passthrough'] : []);
+
         switch ($status) {
             case self::REGISTRATION_SUBMITTED:
                 $this->addFlashMessage(
@@ -87,14 +92,19 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.success.message', 'TwUser'),
                     LocalizationUtility::translate('feuser.registration.status.success.title', 'TwUser'),
-                    FlashMessage::OK);                break;
+                    FlashMessage::OK);
+                break;
             case self::REGISTRATION_CONFIRMATION_ERROR:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.error.message', 'TwUser'),
                     LocalizationUtility::translate('feuser.registration.status.error.title', 'TwUser'),
-                    FlashMessage::OK);                break;
+                    FlashMessage::OK);
+                break;
         }
 
-        $this->view->assign('registrationStatus', $status);
+        $this->view->assignMultiple([
+            'registrationStatus' => $status,
+            'passthrough' => $passthrough,
+        ]);
     }
 }
