@@ -31,6 +31,7 @@ use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
@@ -79,6 +80,12 @@ class RegistrationFormFactory extends AbstractFormFactory
             'pageUid' => $GLOBALS['TSFE']->id,
             'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
         ]);
+
+        // Hook for manipulating the form before calling triggerFormBuildingFinished()
+        foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['beforeBuildingFinished'] ?? [] as $className){
+            $_procObj = GeneralUtility::makeInstance($className);
+            $_procObj->beforeBuildingFinished($form);
+        }
 
         // Return everything
         $this->triggerFormBuildingFinished($form);
