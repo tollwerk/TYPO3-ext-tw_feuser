@@ -29,9 +29,12 @@ namespace Tollwerk\TwUser\Controller;
 
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 
 class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -58,6 +61,16 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     public function confirmRegistrationAction(string $code)
     {
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
+
+        // Hook for frontend user registration action
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserConfirmRegistration'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof FrontendUserHookInterface)) {
+                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserConfirmRegistration] does not implement the FrontendUserHookInterface', 1556280888);
+            }
+            $_procObj->frontendUserConfirmRegistration($code, $frontendUser);
+        }
+
         if ($frontendUser) {
             $frontendUser->setDisabled(false);
             $this->frontendUserRepository->update($frontendUser);
@@ -79,8 +92,16 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      */
     public function registrationAction(string $status = null, array $passthrough = null, array $form = null)
     {
-        $passthrough = $passthrough ?? (!empty($form['passthrough']) ? $form['passthrough'] : []);
+        // Hook for frontend user registration action
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserRegistration'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof FrontendUserHookInterface)) {
+                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserRegistration] does not implement the FrontendUserHookInterface', 1556279202);
+            }
+            $_procObj->frontendUserRegistration($status, $passthrough, $form);
+        }
 
+        $passthrough = $passthrough ?? (!empty($form['passthrough']) ? $form['passthrough'] : []);
         switch ($status) {
             case self::REGISTRATION_SUBMITTED:
                 $this->addFlashMessage(

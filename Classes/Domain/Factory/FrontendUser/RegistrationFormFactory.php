@@ -31,10 +31,12 @@ use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Exception;
 
 class RegistrationFormFactory extends AbstractFormFactory
 {
@@ -70,10 +72,12 @@ class RegistrationFormFactory extends AbstractFormFactory
         $email->setLabeL($this->translate('feuser.registration.form.email'));
         $email->setProperty('fluidAdditionalAttributes', ['placeholder' => $this->translate('feuser.registration.form.email.placeholder')]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
-//        $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
-//            'table' => 'fe_users',
-//            'fieldname' => 'username',
-//        ]));
+        if(empty($this->settings['debug']['enable'])){
+            $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
+                'table' => 'fe_users',
+                'fieldname' => 'username',
+            ]));
+        }
 
         // Add finishers
         $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));
@@ -83,9 +87,12 @@ class RegistrationFormFactory extends AbstractFormFactory
         ]);
 
         // Hook for manipulating the form before calling triggerFormBuildingFinished()
-        foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['beforeBuildingFinished'] ?? [] as $className){
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserRegistrationForm'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
-            $_procObj->beforeBuildingFinished($form);
+            if (!($_procObj instanceof FrontendUserHookInterface)) {
+                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserRegistrationForm] does not implement the FrontendUserHookInterface', 1556283898);
+            }
+            $_procObj->frontendUserRegistrationForm($form);
         }
 
         // Return everything

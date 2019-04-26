@@ -43,6 +43,12 @@
             <trans-unit id="email.senderName">
                 <source>Sender Name</source>
             </trans-unit>
+            <trans-unit id="debug">
+                <source>Debugging</source>
+            </trans-unit>
+            <trans-unit id="debug.enable">
+                <source>Enable debug mode</source>
+            </trans-unit>
 
             <!-- Plugin: FeuserRegistration -->
             <trans-unit id="plugin.feuser.registration">

@@ -8,7 +8,12 @@ Each entry will be separated into four possible groups: **Added**, **Removed**, 
 
 ## [Planned]
 
-- Add `$passthroughParameters` to FrontendUser/RegistrationFormFactory
+- Add passthroughParameters to FrontendUser/RegistrationAction
+- Add frontendUserRegistration hook
+- Add frontendUserConfirmRegistration hook
+- Add frontendUserRegistrationForm hook
+- Add debug mode
+
 
 ## [0.1.1] - 2014-05-24
 ### Added

@@ -10,6 +10,11 @@ plugin.tx_twuser {
     }
 
     settings {
+
+        debug {
+            enable = {$plugin.tx_twuser.settings.debug.enable}
+        }
+
         email {
             senderAddress = {$plugin.tx_twuser.settings.email.senderAddress}
             senderName = {$plugin.tx_twuser.settings.email.senderName}
