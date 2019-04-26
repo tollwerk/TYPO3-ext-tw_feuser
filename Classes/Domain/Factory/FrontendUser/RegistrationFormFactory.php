@@ -32,6 +32,7 @@ use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
@@ -69,10 +70,10 @@ class RegistrationFormFactory extends AbstractFormFactory
         $email->setLabeL($this->translate('feuser.registration.form.email'));
         $email->setProperty('fluidAdditionalAttributes', ['placeholder' => $this->translate('feuser.registration.form.email.placeholder')]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
-        $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
-            'table' => 'fe_users',
-            'fieldname' => 'username',
-        ]));
+//        $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
+//            'table' => 'fe_users',
+//            'fieldname' => 'username',
+//        ]));
 
         // Add finishers
         $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));

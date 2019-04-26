@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Each entry will be separated into four possible groups: **Added**, **Removed**, **Changed** and **Fixed**.
 
+## [Planned]
+
+- Add `$passthroughParameters` to FrontendUser/RegistrationFormFactory
+
 ## [0.1.1] - 2014-05-24
 ### Added
 
