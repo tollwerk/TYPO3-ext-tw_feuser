@@ -167,4 +167,12 @@ class FrontendUserController extends ActionController
             'status' => self::REGISTRATION_CONFIRMATION_ERROR
         ]);
     }
+
+    /**
+     * Render the user profile action
+     */
+    public function profileAction(): void
+    {
+        
+    }
 }

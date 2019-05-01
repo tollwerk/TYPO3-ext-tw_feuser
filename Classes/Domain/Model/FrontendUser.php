@@ -26,20 +26,32 @@
 
 namespace Tollwerk\TwUser\Domain\Model;
 
+/**
+ * Extended Frontend User
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Model
+ */
 class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 {
     /**
+     * User is disabled
+     *
      * @var bool
      */
     protected $disabled = true;
 
     /**
+     * Registration code
+     *
      * @var string
      */
     protected $registrationCode = '';
 
     /**
-     * @return bool
+     * Return whether the user is disabled
+     *
+     * @return bool Disabled
      */
     public function getDisabled(): bool
     {
@@ -47,15 +59,19 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
     }
 
     /**
-     * @param bool $disabled
+     * Set whether the user is disabled
+     *
+     * @param bool $disabled Disabled
      */
-    public function setDisabled(bool $disabled)
+    public function setDisabled(bool $disabled): void
     {
         $this->disabled = $disabled;
     }
 
     /**
-     * @return string
+     * Return the registration code
+     *
+     * @return string Registration code
      */
     public function getRegistrationCode(): string
     {
@@ -63,9 +79,11 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
     }
 
     /**
-     * @param string $registrationCode
+     * Set the registration code
+     *
+     * @param string $registrationCode Registration code
      */
-    public function setRegistrationCode(string $registrationCode)
+    public function setRegistrationCode(string $registrationCode): void
     {
         $this->registrationCode = $registrationCode;
     }

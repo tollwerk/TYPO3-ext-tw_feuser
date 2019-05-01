@@ -77,7 +77,7 @@ interface FrontendUserHookInterface
     public function frontendUserConfirmRegistration(string &$code, FrontendUser $frontendUser = null): void;
 
     /**
-     * Finalization hook called at the end of the form definition process
+     * Finalize the user registration form
      *
      * Gets called when building the FrontendUser registration form.
      * Can be used to manipulate the FormDefinition, for example, to add more form fields, pages, validators etc.
@@ -86,4 +86,15 @@ interface FrontendUserHookInterface
      * @param array $configuration Form factory configuration
      */
     public function frontendUserRegistrationForm(FormDefinition $form, array $configuration): void;
+
+    /**
+     * Finalize the user profile form
+     *
+     * Gets called when building the FrontendUser profile form.
+     * Can be used to manipulate the FormDefinition, for example, to add more form fields, pages, validators etc.
+     *
+     * @param FormDefinition $form Form definition
+     * @param array $configuration Form factory configuration
+     */
+    public function frontendUserProfileForm(FormDefinition $form, array $configuration): void;
 }

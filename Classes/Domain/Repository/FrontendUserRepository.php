@@ -28,7 +28,14 @@ namespace Tollwerk\TwUser\Domain\Repository;
 
 
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
+/**
+ * Frontend User Repository
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Repository
+ */
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 {
     /**
@@ -40,12 +47,14 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByUsername(string $username, bool $ignoreEnableFields = false): ?FrontendUser
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields($ignoreEnableFields)->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
+        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields($ignoreEnableFields)
+              ->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
         $constraints = [
             $query->equals('username', $username),
         ];
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        /** @var QueryResult $result */
         $result = $query->matching($query->logicalAnd($constraints))->execute();
+
         return $result->count() ? $result->getFirst() : null;
     }
 
@@ -57,12 +66,14 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     public function findOneByRegistrationCode($registrationCode)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields(true)->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
+        $query->getQuerySettings()->setRespectStoragePage(false)->setIgnoreEnableFields(true)
+              ->setEnableFieldsToBeIgnored(['disabled', 'starttime', 'endtime']);
         $constraints = [
             $query->equals('registrationCode', $registrationCode),
         ];
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        /** @var QueryResult $result */
         $result = $query->matching($query->logicalAnd($constraints))->execute();
+
         return $result->count() ? $result->getFirst() : null;
     }
 }
