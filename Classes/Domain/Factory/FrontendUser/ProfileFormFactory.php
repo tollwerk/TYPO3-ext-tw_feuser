@@ -83,6 +83,13 @@ class ProfileFormFactory extends AbstractFormFactory
         ]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
 
+        // Add the override configuration as hidden parameter
+        $orc = $page->createElement('orc', 'Hidden');
+        $orc->setDefaultValue(json_encode(array_intersect_key(
+            $configuration,
+            ['actionUri' => true, 'passthrough' => true]
+        )));
+
         // Hook for manipulating the form before calling triggerFormBuildingFinished()
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserProfileForm'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);

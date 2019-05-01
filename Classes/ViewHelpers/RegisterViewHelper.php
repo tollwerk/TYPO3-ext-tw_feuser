@@ -71,7 +71,8 @@ class RegisterViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('configuration', 'array', 'Optional: Form configuration', false, []);
+        $this->registerArgument('actionUri', 'string', 'Optional: Custom form action URI', false);
+        $this->registerArgument('passthrough', 'array', 'Optional: Form override configuration', false, []);
     }
 
     /**
@@ -91,7 +92,15 @@ class RegisterViewHelper extends AbstractViewHelper
         $renderObjName                                      = '<tt_content.list.20.twuser_feuserregistration';
         $renderObjConf                                      = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['twuser_feuserregistration.'];
         $renderObjConf['settings']                          = $userSettings;
-        $renderObjConf['settings']['overrideConfiguration'] = $this->arguments['configuration'];
+        $renderObjConf['settings']['overrideConfiguration'] = [];
+
+        if ($this->arguments['actionUri']) {
+            $renderObjConf['settings']['overrideConfiguration']['actionUri'] = $this->arguments['actionUri'];
+        }
+        
+        if ($this->arguments['passthrough']) {
+            $renderObjConf['settings']['overrideConfiguration']['passthrough'] = $this->arguments['passthrough'];
+        }
 
         return $cObj->cObjGetSingle($renderObjName, $renderObjConf);
     }

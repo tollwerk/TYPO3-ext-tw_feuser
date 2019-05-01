@@ -36,6 +36,7 @@
 namespace Tollwerk\TwUser\Hook;
 
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 /**
@@ -55,13 +56,19 @@ interface FrontendUserHookInterface
      * before rendering the registration form or handling the different statuses. With help of the passed in $controller
      * you can also forward or redirect to other controller actions.
      *
-     * @param string|null $status
-     * @param array $passthrough
-     * @param array|null $form
+     * @param string|null $status          HTTP Status Code
+     * @param array $passthrough           Passthrough Variables
+     * @param array|null $form             Form Variables
+     * @param ActionController $controller Controller
      *
      * @return mixed
      */
-    public function frontendUserRegistration(string &$status = null, array &$passthrough = null, array &$form = null);
+    public function frontendUserRegistration(
+        string &$status = null,
+        array &$passthrough = null,
+        array &$form = null,
+        ActionController $controller = null
+    );
 
     /**
      * frontendUserConfirmRegistration

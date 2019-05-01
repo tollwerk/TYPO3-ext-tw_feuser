@@ -31,9 +31,11 @@ use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -85,6 +87,14 @@ class FrontendUserController extends ActionController
     }
 
     /**
+     * Initialize the registration action
+     */
+    public function initializeRegistrationAction()
+    {
+        $this->setOverrideConfiguration();
+    }
+
+    /**
      * Render the registration form
      *
      * @param string $status The registration status
@@ -94,7 +104,7 @@ class FrontendUserController extends ActionController
      */
     public function registrationAction(string $status = null, array $form = null)
     {
-        $passthrough = $form['orc']['passthrough'] ?? [];
+        $passthrough = $this->settings['overrideConfiguration']['passthrough'] ?? [];
 
         // Hook for frontend user registration action
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserRegistration'] ?? [] as $className) {
@@ -106,9 +116,91 @@ class FrontendUserController extends ActionController
                     1556279202
                 );
             }
-            $_procObj->frontendUserRegistration($status, $passthrough, $form);
+            $_procObj->frontendUserRegistration($status, $passthrough, $form, $this);
         }
 
+        // Process the registration status
+        $this->processStatus($status);
+    }
+
+    /**
+     * Render the confirmation page
+     *
+     * @param string $code       One-time confirmation code
+     * @param array $passthrough Passthrough values
+     *
+     * @throws Exception
+     * @throws IllegalObjectTypeException
+     * @throws StopActionException
+     * @throws UnknownObjectException
+     * @throws \ReflectionException
+     */
+    public function confirmRegistrationAction(string $code, array $passthrough = null)
+    {
+        $forwardParameters           = $passthrough ? ['form' => ['orc' => ['passthrough' => $passthrough]]] : [];
+        $forwardParameters['status'] = self::REGISTRATION_CONFIRMATION_ERROR;
+        $frontendUser                = $this->frontendUserRepository->findOneByRegistrationCode($code);
+
+        // Hook for frontend user registration action
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserConfirmRegistration'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof FrontendUserHookInterface)) {
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][frontendUserConfirmRegistration]'
+                            .' does not implement the FrontendUserHookInterface', $className),
+                    1556280888
+                );
+            }
+            $_procObj->frontendUserConfirmRegistration($code, $frontendUser);
+        }
+
+        // If a valid frontend user is available
+        if ($frontendUser) {
+            $frontendUser->setDisabled(false);
+//            $frontendUser->setRegistrationCode('');
+            $this->frontendUserRepository->update($frontendUser);
+            $this->objectManager->get(PersistenceManager::class)->persistAll();
+
+            // If the user should be logged in automatically
+            if (intval($this->settings['feuser']['autologin'])) {
+                FrontendUserUtility::userAutoLogin($frontendUser->getUid());
+            }
+
+            // Forward to the registration action with a success status
+            $forwardParameters['status'] = self::REGISTRATION_CONFIRMATION_SUCCESS;
+        }
+
+        // Forward to the registration action with an error status
+        $this->forward('registration', null, null, $forwardParameters);
+    }
+
+    /**
+     * Initialize the profile action
+     */
+    public function initializeProfileAction()
+    {
+        $this->setOverrideConfiguration();
+    }
+
+    /**
+     * Render the user profile action
+     *
+     * @param string $status The registration status
+     * @param array $form    The submitted form data
+     */
+    public function profileAction(string $status = null, array $form = null): void
+    {
+        DebugUtility::debug($form);
+        $this->processStatus($status);
+    }
+
+    /**
+     * Process the registration status and add flash messages
+     *
+     * @param string|null $status Status
+     */
+    protected function processStatus(string $status = null)
+    {
         // Add as status message
         switch ($status) {
             case self::REGISTRATION_SUBMITTED:
@@ -135,62 +227,23 @@ class FrontendUserController extends ActionController
     }
 
     /**
-     * Render the confirmation page
+     * Merge the override configuration into the settings
      *
-     * @param string $code One-time confirmation code
-     *
-     * @throws Exception
-     * @throws IllegalObjectTypeException
-     * @throws StopActionException
-     * @throws UnknownObjectException
-     * @throws \ReflectionException
+     * @throws NoSuchArgumentException
      */
-    public function confirmRegistrationAction(string $code)
+    protected function setOverrideConfiguration(): void
     {
-        $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
-
-        // Hook for frontend user registration action
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserConfirmRegistration'] ?? [] as $className) {
-            $_procObj = GeneralUtility::makeInstance($className);
-            if (!($_procObj instanceof FrontendUserHookInterface)) {
-                throw new Exception(
-                    sprintf('The registered class %s for hook [ext/tw_user][frontendUserConfirmRegistration]'
-                            .' does not implement the FrontendUserHookInterface', $className),
-                    1556280888
-                );
+        if ($this->request->hasArgument('form')) {
+            $form = $this->request->getArgument('form');
+            if (isset($form['orc'])) {
+                $orc = is_string($form['orc']) ? (array)json_decode($form['orc'], JSON_OBJECT_AS_ARRAY) : (array)$form['orc'];
+                if (!empty($orc)) {
+                    $this->settings['overrideConfiguration'] = array_merge(
+                        $this->settings['overrideConfiguration'],
+                        $orc
+                    );
+                }
             }
-            $_procObj->frontendUserConfirmRegistration($code, $frontendUser);
         }
-
-        // If a valid frontend user is available
-        if ($frontendUser) {
-            $frontendUser->setDisabled(false);
-            $frontendUser->setRegistrationCode('');
-            $this->frontendUserRepository->update($frontendUser);
-            $this->objectManager->get(PersistenceManager::class)->persistAll();
-
-            // If the user should be logged in automatically
-            if (intval($this->settings['feuser']['autologin'])) {
-                FrontendUserUtility::userAutoLogin($frontendUser->getUid());
-            }
-
-            // Forward to the registration action with a success status
-            $this->forward('registration', null, null, [
-                'status' => self::REGISTRATION_CONFIRMATION_SUCCESS
-            ]);
-        }
-
-        // Forward to the registration action with an error status
-        $this->forward('registration', null, null, [
-            'status' => self::REGISTRATION_CONFIRMATION_ERROR
-        ]);
-    }
-
-    /**
-     * Render the user profile action
-     */
-    public function profileAction(): void
-    {
-
     }
 }
