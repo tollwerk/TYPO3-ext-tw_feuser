@@ -1,14 +1,17 @@
-<html xmlns:f="https://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers"
-      xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
-      xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<f:comment><!--
 
+    Render the registration confirmation email
+
+--></f:comment>
+<html xmlns:f="https://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:render section="Html" arguments="{_all}"/>
 
     <f:section name="Html">
         <f:spaceless>
             <f:format.raw>
-                <f:translate key="LLL:EXT:tw_user/Resources/Private/Language/locallang.xlf:feuser.registration.email.body.html" arguments="{
+                <f:translate
+                    key="LLL:EXT:tw_user/Resources/Private/Language/locallang.xlf:feuser.registration.email.body.html"
+                    arguments="{
                     0: confirmationUri,
                     1: confirmationUri,
                     2: username,
@@ -20,12 +23,13 @@
 
     <f:section name="Plaintext">
         <f:spaceless>
-            <f:translate key="LLL:EXT:tw_user/Resources/Private/Language/locallang.xlf:feuser.registration.email.body.plaintext" arguments="{
+            <f:translate
+                key="LLL:EXT:tw_user/Resources/Private/Language/locallang.xlf:feuser.registration.email.body.plaintext"
+                arguments="{
                 0: confirmationUri,
                 1: username,
                 2: password
             }"/>
         </f:spaceless>
     </f:section>
-
 </html>

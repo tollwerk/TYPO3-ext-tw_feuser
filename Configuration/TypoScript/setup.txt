@@ -7,6 +7,21 @@ plugin.tx_twuser {
         templateRootPath = {$plugin.tx_twuser.view.templateRootPath}
         partialRootPath = {$plugin.tx_twuser.view.partialRootPath}
         layoutRootPath = {$plugin.tx_twuser.view.layoutRootPath}
+
+        templateRootPaths {
+            10 = EXT:tw_user/Resources/Private/Templates/
+            20 = {$plugin.tx_twuser.view.templateRootPath}
+        }
+
+        partialRootPaths {
+            10 = EXT:tw_user/Resources/Private/Partials/
+            20 = {$plugin.tx_twuser.view.partialRootPath}
+        }
+
+        layoutRootPaths {
+            10 = EXT:tw_user/Resources/Private/Layouts/
+            20 = {$plugin.tx_twuser.view.layoutRootPath}
+        }
     }
 
     settings {
@@ -26,6 +41,10 @@ plugin.tx_twuser {
                 groupUid = {$plugin.tx_twuser.settings.feuser.registration.groupUid}
                 pluginPid = {$plugin.tx_twuser.settings.feuser.registration.pluginPid}
             }
+        }
+
+        overrideConfiguration {
+
         }
     }
 }

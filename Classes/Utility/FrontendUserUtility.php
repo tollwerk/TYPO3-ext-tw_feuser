@@ -26,76 +26,101 @@
 
 namespace Tollwerk\TwUser\Utility;
 
+use Swift_SwiftException;
 use Tollwerk\TwBase\Utility\EmailUtility;
 use Tollwerk\TwBase\Utility\StandaloneRenderer;
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserGroupRepository;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
+/**
+ * Frontend User Utility
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Utility
+ */
 class FrontendUserUtility implements SingletonInterface
 {
-    /** @var ObjectManager */
+    /**
+     * Object manager
+     *
+     * @var ObjectManager
+     */
     protected $objectManager = null;
 
-    /** @var FrontendUserGroupRepository */
+    /**
+     * Frontend user group repository
+     *
+     * @var FrontendUserGroupRepository
+     */
     protected $frontendUserGroupRepository = null;
 
-    /** @var FrontendUserRepository */
+    /**
+     * Frontend user repository
+     *
+     * @var FrontendUserRepository
+     */
     protected $frontendUserRepository = null;
 
-    /** @var PersistenceManager */
+    /**
+     * Persistence manager
+     *
+     * @var PersistenceManager
+     */
     protected $persistenceManager = null;
 
     /**
+     * Settings
+     *
      * @var array
      */
     protected $settings = [];
 
     /**
-     * @param FrontendUser $frontendUser
+     * Constructor
      *
-     * @return string
-     *
-     */
-    protected function createRegistrationCode(FrontendUser $frontendUser)
-    {
-        return md5($frontendUser->getEmail().$frontendUser->getUid().time());
-    }
-
-    /**
-     * @param FrontendUserRepository $frontenUserRepository
+     * @throws InvalidConfigurationTypeException
      */
     public function __construct()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->frontendUserRepository = $this->objectManager->get(FrontendUserRepository::class);
+        $this->objectManager               = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->frontendUserRepository      = $this->objectManager->get(FrontendUserRepository::class);
         $this->frontendUserGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class);
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
-        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TwUser');
+        $this->persistenceManager          = $this->objectManager->get(PersistenceManager::class);
+        $this->settings                    = $this->objectManager->get(ConfigurationManager::class)
+                                                                 ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+                                                                     'TwUser');
     }
 
     /**
-     * @param string $email
-     * @param array $passthrough
+     * Create a frontend user
      *
-     * @return bool
+     * @param string $email      Email address
+     * @param mixed $passthrough Paramaters to pass through
+     *
+     * @return bool Success
+     * @throws Swift_SwiftException
+     * @throws InvalidPasswordHashException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
-    public function createFrontendUser(string $email, array $passthrough = []): bool
+    public function createFrontendUser(string $email, $passthrough = null): bool
     {
         // Check if user already exists. If not, create one.
         $frontendUser = $this->frontendUserRepository->findOneByUsername($email, true);
         if (!$frontendUser) {
-            // Create frontend user object
-            /** @var FrontendUser $frontendUser */
             $frontendUser = $this->objectManager->get(FrontendUser::class);
             $frontendUser->setUsername($email);
             $frontendUser->setEmail($email);
@@ -110,7 +135,10 @@ class FrontendUserUtility implements SingletonInterface
 
             // Create and set password
             $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
-            $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($password));
+            $frontendUser->setPassword(
+                GeneralUtility::makeInstance(PasswordHashFactory::class)
+                              ->getDefaultHashInstance('FE')->getHashedPassword($password)
+            );
             $this->frontendUserRepository->add($frontendUser);
             $this->persistenceManager->persistAll();
         }
@@ -120,24 +148,25 @@ class FrontendUserUtility implements SingletonInterface
         $this->frontendUserRepository->update($frontendUser);
         $this->persistenceManager->persistAll();
 
+        // Prepare the registration parameters
+        $parameters = ['code' => $frontendUser->getRegistrationCode()];
+        if ($passthrough) {
+            $parameters['passthrough'] = $passthrough;
+        }
+
         // Send confirmation email
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $confirmationUri = $uriBuilder
+        $uriBuilder         = $this->objectManager->get(UriBuilder::class);
+        $confirmationUri    = $uriBuilder
             ->reset()
             ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
             ->setCreateAbsoluteUri(true)
-            ->uriFor(
-                'confirmRegistration',
-                [
-                    'code' => $frontendUser->getRegistrationCode(),
-                    'passthrough' => $passthrough,
-                ],
-                'FrontendUser',
-                'TwUser',
-                'FeuserRegistration'
-            );
+            ->uriFor('confirmRegistration', $parameters, 'FrontendUser', 'TwUser', 'FeuserRegistration');
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
-        $emailUtility = $this->objectManager->get(EmailUtility::class, $this->settings['email']['senderName'], $this->settings['email']['senderAddress']);
+        $emailUtility       = $this->objectManager->get(
+            EmailUtility::class,
+            $this->settings['email']['senderName'],
+            $this->settings['email']['senderAddress']
+        );
         $emailUtility->send(
             [$frontendUser->getEmail()],
             LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
@@ -145,8 +174,8 @@ class FrontendUserUtility implements SingletonInterface
                 'Email/FrontendUser/Registration',
                 [
                     'confirmationUri' => $confirmationUri,
-                    'username' => $frontendUser->getUsername(),
-                    'password' => $password,
+                    'username'        => $frontendUser->getUsername(),
+                    'password'        => $password,
                 ],
                 'html',
                 'Html'
@@ -155,13 +184,26 @@ class FrontendUserUtility implements SingletonInterface
                 'Email/FrontendUser/Registration',
                 [
                     'confirmationUri' => $confirmationUri,
-                    'username' => $frontendUser->getUsername(),
-                    'password' => $password,
+                    'username'        => $frontendUser->getUsername(),
+                    'password'        => $password,
                 ],
                 'html',
                 'Plaintext'
             )
         );
+
         return true;
+    }
+
+    /**
+     * Create a random registration code
+     *
+     * @param FrontendUser $frontendUser Frontend user
+     *
+     * @return string Registration code
+     */
+    protected function createRegistrationCode(FrontendUser $frontendUser)
+    {
+        return md5($frontendUser->getEmail().$frontendUser->getUid().time());
     }
 }

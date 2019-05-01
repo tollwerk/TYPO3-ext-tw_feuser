@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *
  *  Copyright notice
@@ -26,25 +27,28 @@
 
 namespace Tollwerk\TwUser\Utility;
 
-
+use Hackzilla\PasswordGenerator\Generator\PronounceablePasswordGenerator;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\SingletonInterface;
 
+/**
+ * Password Utility
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Utility
+ */
 class PasswordUtility implements SingletonInterface
 {
     /**
-     * @param int $length
-     * @param string $keySpace
+     * Create and return a random password
      *
      * @return string
+     * @throws InvalidPasswordHashException
      */
-    public function createPassword(int $length = 6, string $keySpace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#'): string
+    public function createPassword(): string
     {
-        $pieces = [];
-        $max = mb_strlen($keySpace, '8bit') - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $pieces[] = $keySpace[random_int(0, $max)];
-        }
-        return implode('', $pieces);
-    }
+        $passwordGenerator = new PronounceablePasswordGenerator();
 
+        return $passwordGenerator->generatePassword();
+    }
 }

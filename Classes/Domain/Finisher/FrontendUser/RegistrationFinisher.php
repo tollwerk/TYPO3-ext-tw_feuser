@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *
  *  Copyright notice
@@ -28,25 +29,36 @@ namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
 /**
- * Class RegistrationFinisher
- * @package Tollwerk\TwUser\Domain\Finisher\FrontendUser
+ * Registration Finisher
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Finisher\FrontendUser
  */
 class RegistrationFinisher extends RedirectFinisher
 {
+    /**
+     * Executes this finisher
+     *
+     * @see AbstractFinisher::execute()
+     */
     public function executeInternal()
     {
         // Get some objects and properties
-        $formRuntime = $this->finisherContext->getFormRuntime();
+        $formRuntime         = $this->finisherContext->getFormRuntime();
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
+        $passthrough         = null;
+        $configuration       = $formRuntime->getElementValue('orc');
+        if (strlen($configuration)) {
+            $configuration = json_decode($configuration);
+            if (is_object($configuration) && isset($configuration->passthrough)) {
+                $passthrough = $configuration->passthrough;
+            }
+        }
 
         // Create FrontendUser
-        $frontendUserUtility->createFrontendUser(
-            $formRuntime->getElementValue('email'),
-            $formRuntime->getElementValue('passthrough')
-        );
+        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $passthrough);
     }
 }

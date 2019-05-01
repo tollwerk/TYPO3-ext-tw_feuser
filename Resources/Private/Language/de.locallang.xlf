@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z" product-name="tw_user">
+        <header/>
+        <body>
+            <trans-unit id="feuser.registration.form.email" approved="yes">
+                <source>Email</source> <target state="translated">E-Mail-Adresse</target></trans-unit>
+            <trans-unit id="feuser.registration.form.email.placeholder" approved="yes">
+                <source>john@doe.com</source> <target state="translated">martina@mustermann.de</target></trans-unit>
+            <trans-unit id="feuser.registration.form.submit" approved="yes">
+                <source>Register now</source> <target state="translated">Jetzt registrieren</target></trans-unit>
+            <trans-unit id="feuser.registration.status.submitted.title" approved="yes">
+                <source>Thank you for registering</source> <target state="translated">Vielen Dank für deine Registrierung</target></trans-unit>
+            <trans-unit id="feuser.registration.status.submitted.message" approved="yes">
+                <source>We have sent you an email. Please click on the confirmation link inside to finish your registration.</source> <target state="translated">Wir haben dir eine E-Mail-Nachricht gesendet. Bitte rufe den Bestätigungs-URL in der Nachricht auf, um deine Registrierung abzuschließen</target></trans-unit>
+            <trans-unit id="feuser.registration.status.success.title" approved="yes">
+                <source>Registration confirmed</source> <target state="translated">Registrierung bestätigt</target></trans-unit>
+            <trans-unit id="feuser.registration.status.success.message" approved="yes">
+                <source>Thank you for confirming your registration. You can now sign in to the website.</source> <target state="translated">Vielen Dank für deine Registrierung. Du kannst dich nun an der Website anmelden.</target></trans-unit>
+            <trans-unit id="feuser.registration.status.error.title" approved="yes">
+                <source>Registration error</source> <target state="translated">Fehler bei der Registrierung</target></trans-unit>
+            <trans-unit id="feuser.registration.status.error.message" approved="yes">
+                <source>We are sorry but there was an error. Please contact us directly if this keeps happening.</source> <target state="translated">Es tut uns leid, aber es ist ein Fehler aufgetreten. Bitte versuche es noch einmal und konktaktiere uns direkt, sollte es bei dem Fehler bleiben.</target></trans-unit>
+            <trans-unit id="feuser.registration.email.subject" approved="yes">
+                <source>Please confirm your registration</source> <target state="translated">Bitte bestätige deine Registrierung</target></trans-unit>
+            <trans-unit id="feuser.registration.email.body.html" approved="yes">
+                <source>&lt;p&gt;Thank your for registering. Please confirm your registration by clicking on the following link:&lt;/p&gt; &lt;blockquote&gt; &lt;a href="%s" target="_blank"&gt;%s&lt;/a&gt; &lt;/blockquote&gt; &lt;p&gt;After that you can sign in with the following credentials:&lt;/p&gt; &lt;blockquote&gt; &lt;strong&gt;Username:&lt;/strong&gt; %s&lt;br /&gt; &lt;strong&gt;Password:&lt;/strong&gt; %s &lt;/blockquote&gt; &lt;p&gt;If you do not wish to register anymore you can simply ignore this message.&lt;/p&gt;</source> <target state="translated">&lt;p&gt;Danke für deine Registrierung. Bitte bestätige sie, indem du die folgende Verknüpfung aktivierst:&lt;/p&gt; &lt;blockquote&gt; &lt;a href="%s" target="_blank"&gt;%s&lt;/a&gt; &lt;/blockquote&gt; &lt;p&gt;Im Anschluss kannst du dich mit den folgenden Daten an unserer Website anmelden:&lt;/p&gt; &lt;blockquote&gt; &lt;strong&gt;Benutzername:&lt;/strong&gt; %s&lt;br /&gt; &lt;strong&gt;Passwort:&lt;/strong&gt; %s &lt;/blockquote&gt; &lt;p&gt;Solltest du diese Nachricht irrtümlicherweise erhalten haben oder nicht nicht länger registrieren wolle, dann ignoriere diese Nachricht bitte einfach.&lt;/p&gt;</target></trans-unit>
+            <trans-unit id="feuser.registration.email.body.plaintext" approved="yes">
+                <source>Please confirm your registration by clicking on the following link: %s After that you can sign in with the following credentials: Username: %s Password: %s If you do not wish to register anymore you can simply ignore this message.</source> <target state="translated"><![CDATA[Danke für deine Registrierung. Bitte bestätige sie, indem du die folgende Verknüpfung aktivierst:
+
+%s
+
+Im Anschluss kannst du dich mit den folgenden Daten an unserer Website anmelden:
+
+Benutzername: %s
+Passwort: %s
+
+Solltest du diese Nachricht irrtümlicherweise erhalten haben oder nicht nicht länger registrieren wolle, dann ignoriere diese Nachricht bitte einfach.]]></target></trans-unit>
+        </body>
+    </file>
+</xliff>

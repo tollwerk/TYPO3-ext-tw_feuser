@@ -1,13 +1,13 @@
+<f:comment><!--
+
+    Render the registration form
+
+--></f:comment>
 <html xmlns:f="https://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers"
       xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
-      xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
       data-namespace-typo3-fluid="true">
-
-    <f:variable name="pt" value="{event: 666}"/>
-
     <formvh:render
         factoryClass="Tollwerk\TwUser\Domain\Factory\FrontendUser\RegistrationFormFactory"
-        overrideConfiguration="{passthrough: pt}"
+        overrideConfiguration="{settings.overrideConfiguration}"
     />
-
 </html>

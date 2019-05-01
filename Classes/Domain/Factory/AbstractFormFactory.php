@@ -30,9 +30,11 @@ namespace Tollwerk\TwUser\Domain\Factory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
+use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
+use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 
@@ -61,7 +63,8 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
     /**
      * @var array
      * All passthrough parameters will be added to the form as hidden input elements
-     * and will be passed to all appropriate finishers, will be appended to redirect urls, be passed to the controller action etc.
+     * and will be passed to all appropriate finishers, will be appended to redirect urls, be passed to the controller
+     * action etc.
      */
     protected $passthrough = [];
 
@@ -83,9 +86,18 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
     public function __construct()
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TwUser');
+        $this->settings      = $this->objectManager->get(ConfigurationManager::class)
+                                                   ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+                                                       'TwUser');
     }
 
+    /**
+     * Return a form field label
+     *
+     * @param string $key Localization key
+     *
+     * @return string
+     */
     protected function label(string $key): string
     {
         return LocalizationUtility::translate('form.') ?? $key;
@@ -101,18 +113,14 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
      * @param string $prototypeName The name of the "PrototypeName" to use; it is factory-specific to implement this.
      *
      * @return FormDefinition a newly built form definition
-     * @throws InvalidConfigurationTypeException
      * @throws PrototypeNotFoundException
-     * @throws TypeDefinitionNotFoundException
-     * @throws TypeDefinitionNotValidException
-     * @throws FinisherPresetNotFoundException
      * @api
      */
     public function build(array $configuration, string $prototypeName = null): FormDefinition
     {
         // Basic configuration
-        $prototypeName = $prototypeName ?? 'standard';
-        $configurationService = $this->objectManager->get(ConfigurationService::class);
+        $prototypeName          = $prototypeName ?? 'standard';
+        $configurationService   = $this->objectManager->get(ConfigurationService::class);
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
         // Set passthrough parameters
@@ -121,22 +129,27 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
         // Create form definition
         /** @var \TYPO3\CMS\Form\Domain\Model\FormDefinition $form */
         $form = $this->objectManager->get($this->formDefinition, $this->identifier, $prototypeConfiguration);
+
         return $form;
     }
 
     /**
-     * Helper to be called by every AbstractFormFactory after everything has been built to call the "afterBuildingFinished"
-     * hook on all form elements.
+     * Helper to be called by every AbstractFormFactory after everything has been built to call the
+     * "afterBuildingFinished" hook on all form elements.
      *
      * @param FormDefinition $form
+     *
+     * @throws TypeDefinitionNotFoundException
+     * @throws TypeDefinitionNotValidException
+     * @throws \TYPO3\CMS\Form\Exception
      */
     public function triggerFormBuildingFinished(FormDefinition $form)
     {
         // Add all passthrough parameters as hidden input fields
         $firstPage = $form->getPageByIndex(0);
-        foreach($this->passthrough as $key => $value){
+        foreach ($this->passthrough as $key => $value) {
             /** @var GenericFormElement $hiddenInput */
-            $hiddenInput  = $firstPage->createElement('passthrough.'.$key, 'Text');
+            $hiddenInput = $firstPage->createElement('passthrough.'.$key, 'Hidden');
             $hiddenInput->setDefaultValue($value);
         }
         parent::triggerFormBuildingFinished($form);
