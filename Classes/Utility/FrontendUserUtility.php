@@ -196,6 +196,29 @@ class FrontendUserUtility implements SingletonInterface
     }
 
     /**
+     * Update the current frontend user
+     *
+     * @param array $values Values
+     *
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    public function updateFrontendUser(array $values): void
+    {
+        $frontendUser = $this->frontendUserRepository->findByIdentifier($GLOBALS['TSFE']->fe_user->user['uid']);
+        if ($frontendUser instanceof FrontendUser) {
+            foreach ($values as $property => $value) {
+                $propertySetter = 'set'.ucfirst($property);
+                if (is_callable([$frontendUser, $propertySetter])) {
+                    $frontendUser->$propertySetter($value);
+                }
+            }
+            $this->frontendUserRepository->update($frontendUser);
+            $this->persistenceManager->persistAll();
+        }
+    }
+
+    /**
      * Create a random registration code
      *
      * @param FrontendUser $frontendUser Frontend user

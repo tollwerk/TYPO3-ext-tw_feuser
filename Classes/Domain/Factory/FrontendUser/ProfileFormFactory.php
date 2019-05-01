@@ -37,6 +37,7 @@
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
+use Tollwerk\TwUser\Domain\Finisher\FrontendUser\ProfileUpdateFinisher;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -99,6 +100,10 @@ class ProfileFormFactory extends AbstractFormFactory
             }
             $_procObj->frontendUserProfileForm($form, $configuration);
         }
+
+        // Add the profile update finisher
+        $profileUpdateFinisher = $this->objectManager->get(ProfileUpdateFinisher::class);
+        $form->addFinisher($profileUpdateFinisher);
 
         // Return everything
         $this->triggerFormBuildingFinished($form);

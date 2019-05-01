@@ -31,7 +31,6 @@ use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -190,7 +189,6 @@ class FrontendUserController extends ActionController
      */
     public function profileAction(string $status = null, array $form = null): void
     {
-        DebugUtility::debug($form);
         $this->processStatus($status);
     }
 
@@ -236,7 +234,8 @@ class FrontendUserController extends ActionController
         if ($this->request->hasArgument('form')) {
             $form = $this->request->getArgument('form');
             if (isset($form['orc'])) {
-                $orc = is_string($form['orc']) ? (array)json_decode($form['orc'], JSON_OBJECT_AS_ARRAY) : (array)$form['orc'];
+                $orc = is_string($form['orc']) ? (array)json_decode($form['orc'],
+                    JSON_OBJECT_AS_ARRAY) : (array)$form['orc'];
                 if (!empty($orc)) {
                     $this->settings['overrideConfiguration'] = array_merge(
                         $this->settings['overrideConfiguration'],
