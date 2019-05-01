@@ -206,4 +206,22 @@ class FrontendUserUtility implements SingletonInterface
     {
         return md5($frontendUser->getEmail().$frontendUser->getUid().time());
     }
+
+    /**
+     * Automatically login a user
+     *
+     * @param int $frontendUserId Frontend User ID
+     *
+     * @throws \ReflectionException
+     * @see https://forge.typo3.org/issues/62194
+     */
+    public static function userAutoLogin($frontendUserId)
+    {
+        $GLOBALS['TSFE']->fe_user->checkPid = 0;
+        $userRecord                         = $GLOBALS['TSFE']->fe_user->getRawUserByUid($frontendUserId);
+        $GLOBALS['TSFE']->fe_user->createUserSession($userRecord);
+        $setSessionCookieMethod = new \ReflectionMethod($GLOBALS['TSFE']->fe_user, 'setSessionCookie');
+        $setSessionCookieMethod->setAccessible(true);
+        $setSessionCookieMethod->invoke($GLOBALS['TSFE']->fe_user);
+    }
 }

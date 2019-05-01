@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z" product-name="tw_user">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z"
+          product-name="tw_user">
         <header/>
         <body>
             <!-- Typoscript constant editor -->
@@ -33,6 +34,9 @@
             </trans-unit>
             <trans-unit id="feuser.registration.pluginPid">
                 <source>Registration | The Page with registration plugin</source>
+            </trans-unit>
+            <trans-unit id="feuser.autologin">
+                <source>Enable auto-login after confirmation</source>
             </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>

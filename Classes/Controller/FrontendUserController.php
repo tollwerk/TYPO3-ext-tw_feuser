@@ -29,6 +29,7 @@ namespace Tollwerk\TwUser\Controller;
 
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
+use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
@@ -99,8 +100,11 @@ class FrontendUserController extends ActionController
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserRegistration'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
             if (!($_procObj instanceof FrontendUserHookInterface)) {
-                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserRegistration] does not implement the FrontendUserHookInterface',
-                    1556279202);
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][frontendUserRegistration]'
+                            .'does not implement the FrontendUserHookInterface', $className),
+                    1556279202
+                );
             }
             $_procObj->frontendUserRegistration($status, $passthrough, $form);
         }
@@ -133,12 +137,13 @@ class FrontendUserController extends ActionController
     /**
      * Render the confirmation page
      *
-     * @param string $code
+     * @param string $code One-time confirmation code
      *
      * @throws Exception
-     * @throws StopActionException
      * @throws IllegalObjectTypeException
+     * @throws StopActionException
      * @throws UnknownObjectException
+     * @throws \ReflectionException
      */
     public function confirmRegistrationAction(string $code)
     {
@@ -148,21 +153,34 @@ class FrontendUserController extends ActionController
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserConfirmRegistration'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
             if (!($_procObj instanceof FrontendUserHookInterface)) {
-                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserConfirmRegistration] does not implement the FrontendUserHookInterface',
-                    1556280888);
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][frontendUserConfirmRegistration]'
+                            .' does not implement the FrontendUserHookInterface', $className),
+                    1556280888
+                );
             }
             $_procObj->frontendUserConfirmRegistration($code, $frontendUser);
         }
 
+        // If a valid frontend user is available
         if ($frontendUser) {
             $frontendUser->setDisabled(false);
+            $frontendUser->setRegistrationCode('');
             $this->frontendUserRepository->update($frontendUser);
             $this->objectManager->get(PersistenceManager::class)->persistAll();
+
+            // If the user should be logged in automatically
+            if (intval($this->settings['feuser']['autologin'])) {
+                FrontendUserUtility::userAutoLogin($frontendUser->getUid());
+            }
+
+            // Forward to the registration action with a success status
             $this->forward('registration', null, null, [
                 'status' => self::REGISTRATION_CONFIRMATION_SUCCESS
             ]);
         }
 
+        // Forward to the registration action with an error status
         $this->forward('registration', null, null, [
             'status' => self::REGISTRATION_CONFIRMATION_ERROR
         ]);
@@ -173,6 +191,6 @@ class FrontendUserController extends ActionController
      */
     public function profileAction(): void
     {
-        
+
     }
 }
