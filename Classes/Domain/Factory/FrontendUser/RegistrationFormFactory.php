@@ -112,8 +112,11 @@ class RegistrationFormFactory extends AbstractFormFactory
                 'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
             ]);
         } else {
-            $redirectUrl                                   = parse_url($configuration['actionUri']);
-            $redirectQuery                                 = empty($redirectUrl['query']) ? [] : $redirectUrl['query'];
+            $redirectUrl   = parse_url($configuration['actionUri']);
+            $redirectQuery = [];
+            if (!empty($redirectUrl['query'])) {
+                parse_str($redirectUrl['query'], $redirectQuery);
+            }
             $redirectQuery['tx_twuser_feuserregistration'] = ['status' => FrontendUserController::REGISTRATION_SUBMITTED];
             $redirectUrl['query']                          = http_build_query($redirectQuery);
             $redirectUrl                                   = HttpUtility::buildUrl($redirectUrl);
