@@ -24,6 +24,7 @@
     }
   ],
   "require": {
-    "tollwerk/tw-base": ">=2.3.0"
+    "tollwerk/tw-base": ">=2.3.0",
+    "hackzilla/password-generator": "^1.4"
   }
 }

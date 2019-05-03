@@ -13,6 +13,9 @@
             <trans-unit id="feuser.registration.form.submit">
                 <source>Register now</source>
             </trans-unit>
+            <trans-unit id="feuser.profile.form.submit">
+                <source>Save changes</source>
+            </trans-unit>
             <trans-unit id="feuser.registration.status.submitted.title">
                 <source>Thank you for registering</source>
             </trans-unit>

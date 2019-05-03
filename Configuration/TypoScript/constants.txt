@@ -36,12 +36,15 @@ plugin.tx_twuser {
         feuser {
             registration {
                 # cat=plugin.tx_twuser/feuser/0010; type=int+; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.pid
-                pid = 0
+                pid =
                 # cat=plugin.tx_twuser/feuser/0011; type=int+; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.groupUid
-                groupUid = 0
+                groupUid =
                 # cat=plugin.tx_twuser/feuser/0020; type=int+; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.pluginPid
-                pluginPid = 123
+                pluginPid =
             }
+
+            # cat=plugin.tx_twuser/feuser/0030; type=boolean; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.autologin
+            autologin =
         }
     }
 }

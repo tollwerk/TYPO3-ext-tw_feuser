@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z" product-name="tw_user">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z"
+          product-name="tw_user">
         <header/>
         <body>
             <!-- Typoscript constant editor -->
@@ -34,6 +35,9 @@
             <trans-unit id="feuser.registration.pluginPid">
                 <source>Registration | The Page with registration plugin</source>
             </trans-unit>
+            <trans-unit id="feuser.autologin">
+                <source>Enable auto-login after confirmation</source>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
             </trans-unit>
@@ -52,7 +56,10 @@
 
             <!-- Plugin: FeuserRegistration -->
             <trans-unit id="plugin.feuser.registration">
-                <source>tollwerk User | Frontend User Registration</source>
+                <source>User: Registration</source>
+            </trans-unit>
+            <trans-unit id="plugin.feuser.profile">
+                <source>User: Profile</source>
             </trans-unit>
             <trans-unit id="plugin.feuser.registration.doubleOptIn">
                 <source>Enable Double-Opt-In</source>

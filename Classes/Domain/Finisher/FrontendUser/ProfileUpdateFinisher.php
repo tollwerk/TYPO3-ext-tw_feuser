@@ -32,12 +32,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
 /**
- * Registration Finisher
+ * Profile Update Finisher
  *
  * @package    Tollwerk\TwUser
  * @subpackage Tollwerk\TwUser\Domain\Finisher\FrontendUser
  */
-class RegistrationFinisher extends RedirectFinisher
+class ProfileUpdateFinisher extends RedirectFinisher
 {
     /**
      * Executes this finisher
@@ -46,19 +46,14 @@ class RegistrationFinisher extends RedirectFinisher
      */
     public function executeInternal()
     {
-        // Get some objects and properties
-        $formRuntime         = $this->finisherContext->getFormRuntime();
-        $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
-        $passthrough         = null;
-        $configuration       = $formRuntime->getElementValue('orc');
-        if (strlen($configuration)) {
-            $configuration = json_decode($configuration);
-            if (is_object($configuration) && isset($configuration->passthrough)) {
-                $passthrough = $configuration->passthrough;
-            }
+        $formRuntime = $this->finisherContext->getFormRuntime();
+        $formValues  = [];
+        foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
+            $renderableId                                                            = $renderable->getIdentifier();
+            $formValues [GeneralUtility::underscoredToLowerCamelCase($renderableId)] = $formRuntime->getElementValue($renderableId);
         }
 
-        // Create FrontendUser
-        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $passthrough);
+        $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
+        $frontendUserUtility->updateFrontendUser(array_diff_key($formValues, ['profile' => true, 'orc' => true]));
     }
 }
