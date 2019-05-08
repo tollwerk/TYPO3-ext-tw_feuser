@@ -8,7 +8,6 @@
         <f:flashMessages/>
         <f:if condition="{registrationStatus}">
             <f:else>
-                <f:comment><!-- Show registration form if no status is given--></f:comment>
                 <f:render partial="FrontendUser/Registration/Form" arguments="{_all}"/>
             </f:else>
         </f:if>

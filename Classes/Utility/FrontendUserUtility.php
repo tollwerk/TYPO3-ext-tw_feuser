@@ -29,10 +29,10 @@ namespace Tollwerk\TwUser\Utility;
 use Swift_SwiftException;
 use Tollwerk\TwBase\Utility\EmailUtility;
 use Tollwerk\TwBase\Utility\StandaloneRenderer;
-use Tollwerk\TwUser\Domain\Model\FrontendUser;
+use Tollwerk\TwCrp\Domain\Model\FrontendUser;
+use Tollwerk\TwCrp\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Domain\Model\FrontendUserGroup;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserGroupRepository;
-use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -191,7 +191,7 @@ class FrontendUserUtility implements SingletonInterface
     protected function sendConfirmationMessage(FrontendUser $frontendUser, string $password, array $parameters): bool
     {
         $frontendUserName = trim($frontendUser->getFirstName().' '.$frontendUser->getLastName());
-        $recipient        = strlen($frontendUserName) ? [$frontendUserName => $frontendUser->getEmail()] : [$frontendUser->getEmail()];
+        $recipient        = strlen($frontendUserName) ? [$frontendUser->getEmail() => $frontendUserName] : [$frontendUser->getEmail()];
         $uriBuilder       = $this->objectManager->get(UriBuilder::class);
         $confirmationUri  = $uriBuilder
             ->reset()
