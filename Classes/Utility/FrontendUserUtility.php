@@ -30,6 +30,7 @@ use Swift_SwiftException;
 use Tollwerk\TwBase\Utility\EmailUtility;
 use Tollwerk\TwBase\Utility\StandaloneRenderer;
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
+use Tollwerk\TwUser\Domain\Model\FrontendUserGroup;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserGroupRepository;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
@@ -107,40 +108,59 @@ class FrontendUserUtility implements SingletonInterface
     /**
      * Create a frontend user
      *
-     * @param string $email      Email address
-     * @param mixed $passthrough Paramaters to pass through
+     * @param string $email               Email address
+     * @param array $additionalProperties Additional Properties
+     * @param mixed $passthrough          Paramaters to pass through
      *
      * @return bool Success
-     * @throws Swift_SwiftException
-     * @throws InvalidPasswordHashException
      * @throws IllegalObjectTypeException
+     * @throws InvalidPasswordHashException
+     * @throws Swift_SwiftException
      * @throws UnknownObjectException
      */
-    public function createFrontendUser(string $email, $passthrough = null): bool
+    public function createFrontendUser(string $email, array $additionalProperties = [], $passthrough = null): bool
     {
         // Check if user already exists. If not, create one.
         $frontendUser = $this->frontendUserRepository->findOneByUsername($email, true);
         if (!$frontendUser) {
             $frontendUser = $this->objectManager->get(FrontendUser::class);
+
+            // Start by adding the additional properties
+            foreach ($additionalProperties as $property => $value) {
+                $propertySetter = 'set'.ucfirst(GeneralUtility::underscoredToUpperCamelCase($property));
+                if (is_callable([$frontendUser, $propertySetter])) {
+                    $frontendUser->$propertySetter($value);
+                }
+            }
+
+            // Set standard properties
             $frontendUser->setUsername($email);
             $frontendUser->setEmail($email);
             $frontendUser->setPid($this->settings['feuser']['registration']['pid']);
             $frontendUser->setDisabled(true);
 
-            // Add FrontendUserGroup
-            $userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['feuser']['registration']['groupUid']);
-            if ($userGroup) {
-                $frontendUser->addUsergroup($userGroup);
+            // Add the default user group
+            $userGroupId = intval($this->settings['feuser']['registration']['groupUid']);
+            if ($userGroupId) {
+                $userGroup = $this->frontendUserGroupRepository->findByUid($userGroupId);
+                if ($userGroup instanceof FrontendUserGroup) {
+                    $frontendUser->addUsergroup($userGroup);
+                }
             }
 
-            // Create and set password
+            // Create and set (new) password
             $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
             $frontendUser->setPassword(
                 GeneralUtility::makeInstance(PasswordHashFactory::class)
-                              ->getDefaultHashInstance('FE')->getHashedPassword($password)
+                              ->getDefaultHashInstance('FE')
+                              ->getHashedPassword($password)
             );
+
+            // Persist the new user
             $this->frontendUserRepository->add($frontendUser);
             $this->persistenceManager->persistAll();
+        } else {
+            $password = 'UNKNOWN';
         }
 
         // Set registration confirmation code and update user
@@ -155,20 +175,39 @@ class FrontendUserUtility implements SingletonInterface
         }
 
         // Send confirmation email
-        $uriBuilder         = $this->objectManager->get(UriBuilder::class);
-        $confirmationUri    = $uriBuilder
+        return $this->sendConfirmationMessage($frontendUser, $password, $parameters);
+    }
+
+    /**
+     * Send a confirmation message
+     *
+     * @param FrontendUser $frontendUser Frontend user
+     * @param string $password           Unencrypted password
+     * @param array $parameters          URL parameters
+     *
+     * @return bool Success
+     * @throws Swift_SwiftException
+     */
+    protected function sendConfirmationMessage(FrontendUser $frontendUser, string $password, array $parameters): bool
+    {
+        $frontendUserName = trim($frontendUser->getFirstName().' '.$frontendUser->getLastName());
+        $recipient        = strlen($frontendUserName) ? [$frontendUserName => $frontendUser->getEmail()] : [$frontendUser->getEmail()];
+        $uriBuilder       = $this->objectManager->get(UriBuilder::class);
+        $confirmationUri  = $uriBuilder
             ->reset()
             ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
             ->setCreateAbsoluteUri(true)
             ->uriFor('confirmRegistration', $parameters, 'FrontendUser', 'TwUser', 'FeuserRegistration');
+
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
         $emailUtility       = $this->objectManager->get(
             EmailUtility::class,
             $this->settings['email']['senderName'],
             $this->settings['email']['senderAddress']
         );
-        $emailUtility->send(
-            [$frontendUser->getEmail()],
+
+        return !!$emailUtility->send(
+            $recipient,
             LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
@@ -191,8 +230,6 @@ class FrontendUserUtility implements SingletonInterface
                 'Plaintext'
             )
         );
-
-        return true;
     }
 
     /**
