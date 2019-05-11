@@ -212,8 +212,8 @@ class FrontendUserUtility implements SingletonInterface
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
+                    'user'            => $frontendUser,
                     'confirmationUri' => $confirmationUri,
-                    'username'        => $frontendUser->getUsername(),
                     'password'        => $password,
                 ],
                 'html',
@@ -222,8 +222,8 @@ class FrontendUserUtility implements SingletonInterface
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
+                    'user'            => $frontendUser,
                     'confirmationUri' => $confirmationUri,
-                    'username'        => $frontendUser->getUsername(),
                     'password'        => $password,
                 ],
                 'html',

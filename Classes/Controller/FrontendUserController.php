@@ -31,7 +31,6 @@ use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -98,11 +97,10 @@ class FrontendUserController extends ActionController
      * Render the registration form
      *
      * @param string $status The registration status
-     * @param array $form    The submitted form data
      *
      * @throws Exception
      */
-    public function registrationAction(string $status = null, array $form = null)
+    public function registrationAction(string $status = null)
     {
         $passthrough = $this->settings['overrideConfiguration']['passthrough'] ?? [];
 
@@ -116,6 +114,7 @@ class FrontendUserController extends ActionController
                     1556279202
                 );
             }
+            $form = null;
             $_procObj->frontendUserRegistration($status, $passthrough, $form, $this);
         }
 
@@ -186,9 +185,8 @@ class FrontendUserController extends ActionController
      * Render the user profile action
      *
      * @param string $status The registration status
-     * @param array $form    The submitted form data
      */
-    public function profileAction(string $status = null, array $form = null): void
+    public function profileAction(string $status = null): void
     {
         $this->processStatus($status);
     }
