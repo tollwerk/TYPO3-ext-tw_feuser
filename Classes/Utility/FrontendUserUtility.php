@@ -97,13 +97,13 @@ class FrontendUserUtility implements SingletonInterface
      */
     public function __construct()
     {
-        $this->objectManager               = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->frontendUserRepository      = $this->objectManager->get(FrontendUserRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->frontendUserRepository = $this->objectManager->get(FrontendUserRepository::class);
         $this->frontendUserGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class);
-        $this->persistenceManager          = $this->objectManager->get(PersistenceManager::class);
-        $this->settings                    = $this->objectManager->get(ConfigurationManager::class)
-                                                                 ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
-                                                                     'TwUser');
+        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->settings = $this->objectManager->get(ConfigurationManager::class)
+            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+                'TwUser');
     }
 
     /**
@@ -149,12 +149,11 @@ class FrontendUserUtility implements SingletonInterface
                 }
             }
 
-            // Create and set (new) password
-            $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
+            $password = !empty($additionalProperties['password']) ? $additionalProperties['password'] : GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
             $frontendUser->setPassword(
                 GeneralUtility::makeInstance(PasswordHashFactory::class)
-                              ->getDefaultHashInstance('FE')
-                              ->getHashedPassword($password)
+                    ->getDefaultHashInstance('FE')
+                    ->getHashedPassword($password)
             );
 
             // Persist the new user
@@ -192,16 +191,16 @@ class FrontendUserUtility implements SingletonInterface
     protected function sendConfirmationMessage(FrontendUser $frontendUser, string $password, array $parameters): bool
     {
         $frontendUserName = trim($frontendUser->getFirstName().' '.$frontendUser->getLastName());
-        $recipient        = strlen($frontendUserName) ? [$frontendUser->getEmail() => $frontendUserName] : [$frontendUser->getEmail()];
-        $uriBuilder       = $this->objectManager->get(UriBuilder::class);
-        $confirmationUri  = $uriBuilder
+        $recipient = strlen($frontendUserName) ? [$frontendUser->getEmail() => $frontendUserName] : [$frontendUser->getEmail()];
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $confirmationUri = $uriBuilder
             ->reset()
             ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
             ->setCreateAbsoluteUri(true)
             ->uriFor('confirmRegistration', $parameters, 'FrontendUser', 'TwUser', 'FeuserRegistration');
 
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
-        $emailUtility       = $this->objectManager->get(
+        $emailUtility = $this->objectManager->get(
             EmailUtility::class,
             $this->settings['email']['senderName'],
             $this->settings['email']['senderAddress']
@@ -213,10 +212,10 @@ class FrontendUserUtility implements SingletonInterface
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
-                    'user'            => $frontendUser,
+                    'user' => $frontendUser,
                     'username' => $frontendUser->getUsername(),
                     'confirmationUri' => $confirmationUri,
-                    'password'        => $password,
+                    'password' => $password,
                 ],
                 'html',
                 'Html'
@@ -224,10 +223,10 @@ class FrontendUserUtility implements SingletonInterface
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
-                    'user'            => $frontendUser,
+                    'user' => $frontendUser,
                     'username' => $frontendUser->getUsername(),
                     'confirmationUri' => $confirmationUri,
-                    'password'        => $password,
+                    'password' => $password,
                 ],
                 'html',
                 'Plaintext'
@@ -281,7 +280,7 @@ class FrontendUserUtility implements SingletonInterface
     public static function userAutoLogin($frontendUserId)
     {
         $GLOBALS['TSFE']->fe_user->checkPid = 0;
-        $userRecord                         = $GLOBALS['TSFE']->fe_user->getRawUserByUid($frontendUserId);
+        $userRecord = $GLOBALS['TSFE']->fe_user->getRawUserByUid($frontendUserId);
         $GLOBALS['TSFE']->fe_user->createUserSession($userRecord);
         $setSessionCookieMethod = new \ReflectionMethod($GLOBALS['TSFE']->fe_user, 'setSessionCookie');
         $setSessionCookieMethod->setAccessible(true);
