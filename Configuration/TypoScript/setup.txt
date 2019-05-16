@@ -45,6 +45,11 @@ plugin.tx_twuser {
             autologin = {$plugin.tx_twuser.settings.feuser.autologin}
         }
 
+        pages {
+            terms = {$plugin.tx_twuser.settings.pages.terms}
+            privacy = {$plugin.tx_twuser.settings.pages.privacy}
+        }
+
         overrideConfiguration {
 
         }

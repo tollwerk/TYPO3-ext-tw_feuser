@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -213,6 +214,7 @@ class FrontendUserUtility implements SingletonInterface
                 'Email/FrontendUser/Registration',
                 [
                     'user'            => $frontendUser,
+                    'username' => $frontendUser->getUsername(),
                     'confirmationUri' => $confirmationUri,
                     'password'        => $password,
                 ],
@@ -223,6 +225,7 @@ class FrontendUserUtility implements SingletonInterface
                 'Email/FrontendUser/Registration',
                 [
                     'user'            => $frontendUser,
+                    'username' => $frontendUser->getUsername(),
                     'confirmationUri' => $confirmationUri,
                     'password'        => $password,
                 ],

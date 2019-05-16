@@ -7,9 +7,23 @@
             <trans-unit id="feuser.registration.form.email">
                 <source>Email</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.form.firstName">
+                <source>First name</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.lastName">
+                <source>Last name</source>
+            </trans-unit>
             <trans-unit id="feuser.registration.form.email.placeholder">
                 <source>john@doe.com</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.form.terms.label">
+                <source>Terms and privacy disclaimer</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.terms" approved="yes">
+                <source>I hereby confirm to have read and agreed to the %s and the %s</source>
+                <target state="translated">Ich bestätige, die %s und %s zur Kenntnis genommen zu haben und stimme zu.</target>
+            </trans-unit>
+
             <trans-unit id="feuser.registration.form.submit">
                 <source>Register now</source>
             </trans-unit>

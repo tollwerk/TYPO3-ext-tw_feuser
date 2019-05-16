@@ -203,19 +203,19 @@ class FrontendUserController extends ActionController
             case self::REGISTRATION_SUBMITTED:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.submitted.message', 'TwUser'),
-                    LocalizationUtility::translate('feuser.registration.status.submitted.title', 'TwUser'),
+                    // LocalizationUtility::translate('feuser.registration.status.submitted.title', 'TwUser'),
                     FlashMessage::OK);
                 break;
             case self::REGISTRATION_CONFIRMATION_SUCCESS:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.success.message', 'TwUser'),
-                    LocalizationUtility::translate('feuser.registration.status.success.title', 'TwUser'),
+                    // LocalizationUtility::translate('feuser.registration.status.success.title', 'TwUser'),
                     FlashMessage::OK);
                 break;
             case self::REGISTRATION_CONFIRMATION_ERROR:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.error.message', 'TwUser'),
-                    LocalizationUtility::translate('feuser.registration.status.error.title', 'TwUser'),
+                    // LocalizationUtility::translate('feuser.registration.status.error.title', 'TwUser'),
                     FlashMessage::OK);
                 break;
         }

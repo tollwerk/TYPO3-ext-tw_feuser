@@ -74,14 +74,25 @@ class RegistrationFormFactory extends AbstractFormFactory
         $form->setRenderingOption('controllerAction', 'registration');
         $form->setRenderingOption('submitButtonLabel', $this->translate('feuser.registration.form.submit'));
         $form->setRenderingOption('elementClassAttribute', 'UserRegistration__form Form');
+        $form->setRenderingOption('honeypot', ['enable' => false]);
+
 
         // Add custom action URL
         if (!empty($configuration['actionUri'])) {
             $form->setRenderingOption('actionUri', $configuration['actionUri']);
         }
-
         // Create page and form fields
         $page  = $form->createPage('registration');
+
+
+        $firstName = $page->createElement('firstName', 'Text');
+        $firstName->setLabel($this->translate('feuser.registration.form.firstName'));
+        $firstName->addValidator($this->objectManager->get(NotEmptyValidator::class));
+
+        $lastName = $page->createElement('lastName', 'Text');
+        $lastName->setLabel($this->translate('feuser.registration.form.lastName'));
+        $lastName->addValidator($this->objectManager->get(NotEmptyValidator::class));
+
         $email = $page->createElement('email', 'Email');
         $email->setLabel($this->translate('feuser.registration.form.email'));
         $email->setProperty('fluidAdditionalAttributes', [
@@ -94,6 +105,25 @@ class RegistrationFormFactory extends AbstractFormFactory
                 'fieldname' => 'username',
             ]));
         }
+
+        $privacy = $page->createElement('terms', 'Checkbox');
+        $privacy->setProperty('containerClassAttribute', 'FormCheckbox FormCheckbox--terms');
+        $privacy->setLabel($this->translate('feuser.registration.form.terms.label'));
+        $privacy->setRenderingOption('label', [
+            'labelType'   => 1, // Render adjacent label
+            'renderLabel' => [
+                'partial'   => 'Field/LinkedLabel',
+                'arguments' => [
+                    'pages' => [
+                        $this->settings['pages']['privacy'],
+                        $this->settings['pages']['terms'],
+                    ],
+                    'label' => 'LLL:EXT:tw_user/Resources/Private/Language/locallang.xlf:feuser.registration.form.terms'
+                ]
+            ]
+        ]);
+        $privacy->addValidator($this->objectManager->get(NotEmptyValidator::class));
+
 
         // Add the override configuration as hidden parameter
         $orc = $page->createElement('orc', 'Hidden');

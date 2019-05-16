@@ -53,6 +53,12 @@
             <trans-unit id="debug.enable">
                 <source>Enable debug mode</source>
             </trans-unit>
+            <trans-unit id="pages.terms">
+                <source>Legal terms PID</source>
+            </trans-unit>
+            <trans-unit id="pages.privacy">
+                <source>Privacy disclaimer PID</source>
+            </trans-unit>
 
             <!-- Plugin: FeuserRegistration -->
             <trans-unit id="plugin.feuser.registration">

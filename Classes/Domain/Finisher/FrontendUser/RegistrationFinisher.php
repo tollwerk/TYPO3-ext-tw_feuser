@@ -51,6 +51,7 @@ class RegistrationFinisher extends RedirectFinisher
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
         $passthrough         = null;
         $configuration       = $formRuntime->getElementValue('orc');
+
         if (strlen($configuration)) {
             $configuration = json_decode($configuration);
             if (is_object($configuration) && isset($configuration->passthrough)) {
@@ -58,7 +59,17 @@ class RegistrationFinisher extends RedirectFinisher
             }
         }
 
+        $additionalProperties = [];
+        $firstName = $formRuntime->getElementValue('firstName');
+        if($firstName){
+            $additionalProperties['first_name'] = $firstName;
+        }
+        $lastName = $formRuntime->getElementValue('lastName');
+        if($firstName){
+            $additionalProperties['last_name'] = $lastName;
+        }
+
         // Create FrontendUser
-        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $passthrough);
+        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $additionalProperties, $passthrough);
     }
 }

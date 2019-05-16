@@ -30,6 +30,7 @@ namespace Tollwerk\TwUser\Domain\Factory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -74,13 +75,14 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
     /**
      * Call LocalizationUtility::translate with the given $key.
      *
-     * @param $key
+     * @param string $key
+     * @param array $arguments
      *
      * @return string   Returns the $key if no translation found.
      */
-    protected function translate($key): string
+    protected function translate(string $key, array $arguments = []): string
     {
-        return LocalizationUtility::translate($key, 'TwUser') ?: $key;
+        return LocalizationUtility::translate($key, 'TwUser', $arguments) ?: $key;
     }
 
     /**

@@ -5,7 +5,13 @@
 --></f:comment>
 <html xmlns:f="https://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers" data-namespace-typo3-fluid="true">
     <div class="UserRegistration">
-        <f:flashMessages/>
+        <f:flashMessages as="flashMessages">
+            <f:for each="{flashMessages}" as="flashMessage">
+                <p class="FlashMessage FlashMessage--severity-{flashMsesage.severity}">
+                    {flashMessage.message}
+                </p>
+            </f:for>
+        </f:flashMessages>
         <f:if condition="{registrationStatus}">
             <f:else>
                 <f:render partial="FrontendUser/Registration/Form" arguments="{_all}"/>

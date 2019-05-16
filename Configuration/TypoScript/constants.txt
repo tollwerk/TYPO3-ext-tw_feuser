@@ -33,6 +33,14 @@ plugin.tx_twuser {
             senderName =
         }
 
+        pages {
+            # cat=plugin.tx_twuser/pages/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:pages.terms
+            terms =
+
+            # cat=plugin.tx_twuser/pages/0020; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:pages.privacy
+            privacy =
+        }
+
         feuser {
             registration {
                 # cat=plugin.tx_twuser/feuser/0010; type=int+; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser.registration.pid
