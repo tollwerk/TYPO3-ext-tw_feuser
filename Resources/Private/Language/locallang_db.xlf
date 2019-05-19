@@ -27,13 +27,16 @@
                 <source>Frontend User</source>
             </trans-unit>
             <trans-unit id="feuser.registration.pid">
-                <source>Registration | The pid for fe_user records</source>
+                <source>Frontend user storage page ID</source>
             </trans-unit>
             <trans-unit id="feuser.registration.groupUid">
-                <source>Registration | The feuser group uid</source>
+                <source>Frontend user group ID</source>
             </trans-unit>
             <trans-unit id="feuser.registration.pluginPid">
-                <source>Registration | The Page with registration plugin</source>
+                <source>Registration confirmation page ID</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.pluginCid">
+                <source>Registration confirmation plugin ID</source>
             </trans-unit>
             <trans-unit id="feuser.autologin">
                 <source>Enable auto-login after confirmation</source>

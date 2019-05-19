@@ -39,6 +39,7 @@ namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\ProfileUpdateFinisher;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -91,6 +92,10 @@ class ProfileFormFactory extends AbstractFormFactory
             ['actionUri' => true, 'passthrough' => true]
         )));
 
+        // Add the profile update finisher
+        $profileUpdateFinisher = $this->objectManager->get(ProfileUpdateFinisher::class);
+        $form->addFinisher($profileUpdateFinisher);
+
         // Hook for manipulating the form before calling triggerFormBuildingFinished()
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserProfileForm'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
@@ -100,10 +105,6 @@ class ProfileFormFactory extends AbstractFormFactory
             }
             $_procObj->frontendUserProfileForm($form, $configuration);
         }
-
-        // Add the profile update finisher
-        $profileUpdateFinisher = $this->objectManager->get(ProfileUpdateFinisher::class);
-        $form->addFinisher($profileUpdateFinisher);
 
         // Return everything
         $this->triggerFormBuildingFinished($form);

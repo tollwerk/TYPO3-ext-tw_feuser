@@ -59,6 +59,7 @@ class RegistrationFinisher extends RedirectFinisher
         }
 
         // Create FrontendUser
-        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $passthrough);
+        $formValues = array_diff_key($formRuntime->getFormState()->getFormValues(), ['email' => true]);
+        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $formValues, $passthrough);
     }
 }

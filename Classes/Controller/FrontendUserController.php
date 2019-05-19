@@ -31,6 +31,7 @@ use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -156,7 +157,7 @@ class FrontendUserController extends ActionController
         // If a valid frontend user is available
         if ($frontendUser) {
             $frontendUser->setDisabled(false);
-//            $frontendUser->setRegistrationCode('');
+//            $frontendUser->setRegistrationCode(''); TODO: enable
             $this->frontendUserRepository->update($frontendUser);
             $this->objectManager->get(PersistenceManager::class)->persistAll();
 

@@ -11,6 +11,7 @@ config.tx_extbase.persistence.classes {
         columns {
             tx_twuser_registration_code.mapOnProperty = registrationCode
             disable.mapOnProperty = disabled
+            tx_extbase_type.mapOnProperty = txExtbaseType
         }
     }
 

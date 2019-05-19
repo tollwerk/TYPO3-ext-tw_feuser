@@ -36,6 +36,7 @@
 
 namespace Tollwerk\TwUser\Domain\Finisher;
 
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 /**

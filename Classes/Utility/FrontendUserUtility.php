@@ -29,10 +29,10 @@ namespace Tollwerk\TwUser\Utility;
 use Swift_SwiftException;
 use Tollwerk\TwBase\Utility\EmailUtility;
 use Tollwerk\TwBase\Utility\StandaloneRenderer;
-use Tollwerk\TwCrp\Domain\Model\FrontendUser;
-use Tollwerk\TwCrp\Domain\Repository\FrontendUserRepository;
+use Tollwerk\TwUser\Domain\Model\FrontendUser;
 use Tollwerk\TwUser\Domain\Model\FrontendUserGroup;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserGroupRepository;
+use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -186,18 +186,25 @@ class FrontendUserUtility implements SingletonInterface
      * @param array $parameters          URL parameters
      *
      * @return bool Success
-     * @throws Swift_SwiftException
      */
     protected function sendConfirmationMessage(FrontendUser $frontendUser, string $password, array $parameters): bool
     {
         $frontendUserName = trim($frontendUser->getFirstName().' '.$frontendUser->getLastName());
         $recipient        = strlen($frontendUserName) ? [$frontendUser->getEmail() => $frontendUserName] : [$frontendUser->getEmail()];
-        $uriBuilder       = $this->objectManager->get(UriBuilder::class);
-        $confirmationUri  = $uriBuilder
-            ->reset()
-            ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
-            ->setCreateAbsoluteUri(true)
-            ->uriFor('confirmRegistration', $parameters, 'FrontendUser', 'TwUser', 'FeuserRegistration');
+        $uriBuilder       = $this->objectManager->get(UriBuilder::class)
+                                                ->reset()
+                                                ->setTargetPageUid($this->settings['feuser']['registration']['pluginPid'])
+                                                ->setCreateAbsoluteUri(true);
+        if (intval($this->settings['feuser']['registration']['pluginCid'])) {
+            $uriBuilder->setSection('c'.$this->settings['feuser']['registration']['pluginCid']);
+        }
+        $confirmationUri = $uriBuilder->uriFor(
+            'confirmRegistration',
+            $parameters,
+            'FrontendUser',
+            'TwUser',
+            'FeuserRegistration'
+        );
 
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
         $emailUtility       = $this->objectManager->get(

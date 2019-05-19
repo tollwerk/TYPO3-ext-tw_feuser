@@ -40,6 +40,7 @@ plugin.tx_twuser {
                 pid = {$plugin.tx_twuser.settings.feuser.registration.pid}
                 groupUid = {$plugin.tx_twuser.settings.feuser.registration.groupUid}
                 pluginPid = {$plugin.tx_twuser.settings.feuser.registration.pluginPid}
+                pluginCid = {$plugin.tx_twuser.settings.feuser.registration.pluginCid}
             }
 
             autologin = {$plugin.tx_twuser.settings.feuser.autologin}

@@ -49,6 +49,13 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
     protected $registrationCode = '';
 
     /**
+     * Extbase type
+     *
+     * @var string
+     */
+    protected $txExtbaseType;
+
+    /**
      * Return whether the user is disabled
      *
      * @return bool Disabled
@@ -86,5 +93,25 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
     public function setRegistrationCode(string $registrationCode): void
     {
         $this->registrationCode = $registrationCode;
+    }
+
+    /**
+     * Return the Extbase type
+     *
+     * @return string Extbase type
+     */
+    public function getTxExtbaseType(): string
+    {
+        return $this->txExtbaseType;
+    }
+
+    /**
+     * Set the Extbase type
+     *
+     * @param string $txExtbaseType Extbase type
+     */
+    public function setTxExtbaseType(string $txExtbaseType): void
+    {
+        $this->txExtbaseType = $txExtbaseType;
     }
 }
