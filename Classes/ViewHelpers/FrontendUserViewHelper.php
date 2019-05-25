@@ -36,8 +36,8 @@
 
 namespace Tollwerk\TwUser\ViewHelpers;
 
-use Tollwerk\TwUser\Domain\Model\FrontendUser;
-use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use Tollwerk\TwCrp\Domain\Model\FrontendUser;
+use Tollwerk\TwCrp\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;

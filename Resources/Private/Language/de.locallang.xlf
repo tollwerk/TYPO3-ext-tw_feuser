@@ -20,6 +20,14 @@
                 <source>john@doe.com</source>
                 <target state="translated">martina@mustermann.de</target>
             </trans-unit>
+            <trans-unit id="feuser.registration.form.password" approved="yes">
+                <source>Password</source>
+                <target state="translated">Passwort</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.repeatPassword" approved="yes">
+                <source>Repeat password</source>
+                <target state="translated">Passwort wiederholen</target>
+            </trans-unit>
             <trans-unit id="feuser.registration.form.terms.label">
                 <source>Terms and privacy disclaimer</source>
                 <target>Kenntnissnahme der Datenschutzerklärung und Mietbedingungen</target>
@@ -33,7 +41,7 @@
                 <target state="translated">Jetzt registrieren</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.submitted.title" approved="yes">
-                <source>Thank you for registering</source>
+                <source>Thank you for your registration</source>
                 <target state="translated">Vielen Dank für deine Registrierung</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.submitted.message" approved="yes">

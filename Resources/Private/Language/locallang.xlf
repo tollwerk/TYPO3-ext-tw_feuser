@@ -19,6 +19,12 @@
             <trans-unit id="feuser.registration.form.terms.label">
                 <source>Terms and privacy disclaimer</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.form.password">
+                <source>Password</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.repeatPassword">
+                <source>Repeat password</source>
+            </trans-unit>
             <trans-unit id="feuser.registration.form.terms" approved="yes">
                 <source>I hereby confirm to have read and agreed to the %s and the %s</source>
                 <target state="translated">Ich bestätige, die %s und %s zur Kenntnis genommen zu haben und stimme zu.</target>

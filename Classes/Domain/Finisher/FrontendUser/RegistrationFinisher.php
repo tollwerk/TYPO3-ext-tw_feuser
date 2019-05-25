@@ -69,6 +69,11 @@ class RegistrationFinisher extends RedirectFinisher
             $additionalProperties['last_name'] = $lastName;
         }
 
+        $password = $formRuntime->getElementValue('password');
+        if($password){
+            $additionalProperties['password'] = $password;
+        }
+
         // Create FrontendUser
         $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'), $additionalProperties, $passthrough);
     }

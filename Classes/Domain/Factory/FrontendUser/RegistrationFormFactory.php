@@ -76,7 +76,6 @@ class RegistrationFormFactory extends AbstractFormFactory
         $form->setRenderingOption('elementClassAttribute', 'UserRegistration__form Form');
         $form->setRenderingOption('honeypot', ['enable' => false]);
 
-
         // Add custom action URL
         if (!empty($configuration['actionUri'])) {
             $form->setRenderingOption('actionUri', $configuration['actionUri']);
@@ -84,21 +83,21 @@ class RegistrationFormFactory extends AbstractFormFactory
         // Create page and form fields
         $page  = $form->createPage('registration');
 
-
         $firstName = $page->createElement('firstName', 'Text');
         $firstName->setLabel($this->translate('feuser.registration.form.firstName'));
         $firstName->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $firstName->setProperty('fluidAdditionalAttributes', ['required' => 'required']);
+        $firstName->isRequired(true);
 
         $lastName = $page->createElement('lastName', 'Text');
         $lastName->setLabel($this->translate('feuser.registration.form.lastName'));
         $lastName->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $lastName->isRequired(true);
 
         $email = $page->createElement('email', 'Email');
         $email->setLabel($this->translate('feuser.registration.form.email'));
-        $email->setProperty('fluidAdditionalAttributes', [
-            'placeholder' => $this->translate('feuser.registration.form.email.placeholder')
-        ]);
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $email->isRequired(true);
         if (empty($this->settings['debug']['enable'])) {
             $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
                 'table'     => 'fe_users',
@@ -106,9 +105,16 @@ class RegistrationFormFactory extends AbstractFormFactory
             ]));
         }
 
+        $password = $page->createElement('password', 'AdvancedPassword');
+        $password->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $password->setLabel($this->translate('feuser.registration.form.password'));
+        $password->setProperty('confirmationLabel', $this->translate('feuser.registration.form.repeatPassword'));
+        $password->isRequired(true);
+
         $privacy = $page->createElement('terms', 'Checkbox');
         $privacy->setProperty('containerClassAttribute', 'FormCheckbox FormCheckbox--terms');
         $privacy->setLabel($this->translate('feuser.registration.form.terms.label'));
+        $privacy->isRequired(true);
         $privacy->setRenderingOption('label', [
             'labelType'   => 1, // Render adjacent label
             'renderLabel' => [
