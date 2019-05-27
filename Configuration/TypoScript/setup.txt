@@ -47,7 +47,7 @@ plugin.tx_twuser {
         }
 
         overrideConfiguration {
-
+            section = c{$plugin.tx_twuser.settings.feuser.registration.pluginCid}
         }
     }
 }

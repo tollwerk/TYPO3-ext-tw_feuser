@@ -74,6 +74,7 @@ class RegistrationFormFactory extends AbstractFormFactory
         $form->setRenderingOption('controllerAction', 'registration');
         $form->setRenderingOption('submitButtonLabel', $this->translate('feuser.registration.form.submit'));
         $form->setRenderingOption('elementClassAttribute', 'UserRegistration__form Form');
+        $form->setRenderingOption('section', $configuration['section']);
 
         // Add custom action URL
         if (!empty($configuration['actionUri'])) {

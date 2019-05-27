@@ -39,7 +39,6 @@ namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\ProfileUpdateFinisher;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -49,6 +48,12 @@ use TYPO3\CMS\Form\Domain\Model\Exception\FinisherPresetNotFoundException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Exception;
 
+/**
+ * Profile form factory
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Factory\FrontendUser
+ */
 class ProfileFormFactory extends AbstractFormFactory
 {
     /**
@@ -75,6 +80,7 @@ class ProfileFormFactory extends AbstractFormFactory
         $form->setRenderingOption('controllerAction', 'profile');
         $form->setRenderingOption('submitButtonLabel', $this->translate('feuser.profile.form.submit'));
         $form->setRenderingOption('elementClassAttribute', 'UserProfile__form Form');
+        $form->setRenderingOption('honeypot', ['enable' => false]);
 
         // Create page and form fields
         $page  = $form->createPage('profile');
