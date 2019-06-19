@@ -11,7 +11,7 @@ call_user_func(
             'Tollwerk.TwUser',
             'FeuserRegistration',
             ['FrontendUser' => 'registration, confirmRegistration'],
-            ['FrontendUser' => 'confirmRegistration']
+            ['FrontendUser' => 'registration, confirmRegistration']
         );
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Tollwerk.TwUser',
