@@ -28,6 +28,7 @@
 namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
@@ -49,8 +50,9 @@ class ProfileUpdateFinisher extends RedirectFinisher
         $formRuntime = $this->finisherContext->getFormRuntime();
         $formValues  = [];
         foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
-            $renderableId                                                            = $renderable->getIdentifier();
-            $formValues [GeneralUtility::underscoredToLowerCamelCase($renderableId)] = $formRuntime->getElementValue($renderableId);
+            $renderableId                    = $renderable->getIdentifier();
+            $renderableFormName              = GeneralUtility::underscoredToLowerCamelCase($renderableId);
+            $formValues[$renderableFormName] = $formRuntime->getElementValue($renderableId);
         }
 
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);

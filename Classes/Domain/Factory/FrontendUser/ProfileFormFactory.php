@@ -36,6 +36,7 @@
 
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
+use Tollwerk\TwBase\Domain\Model\UnsubmittableFormDefinition;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\ProfileUpdateFinisher;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
@@ -56,6 +57,13 @@ use TYPO3\CMS\Form\Exception;
  */
 class ProfileFormFactory extends AbstractFormFactory
 {
+    /**
+     * Form definition class
+     *
+     * @var string
+     */
+//    protected $formDefinition = UnsubmittableFormDefinition::class;
+
     /**
      * Build a form definition, depending on some configuration.
      *

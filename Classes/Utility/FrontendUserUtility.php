@@ -36,14 +36,17 @@ use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -101,8 +104,10 @@ class FrontendUserUtility implements SingletonInterface
         $this->frontendUserGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class);
         $this->persistenceManager          = $this->objectManager->get(PersistenceManager::class);
         $this->settings                    = $this->objectManager->get(ConfigurationManager::class)
-                                                                 ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
-                                                                     'TwUser');
+                                                                 ->getConfiguration(
+                                                                     ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+                                                                     'TwUser'
+                                                                 );
     }
 
     /**
@@ -186,6 +191,7 @@ class FrontendUserUtility implements SingletonInterface
      * @param array $parameters          URL parameters
      *
      * @return bool Success
+     * @throws Swift_SwiftException
      */
     protected function sendConfirmationMessage(FrontendUser $frontendUser, string $password, array $parameters): bool
     {
@@ -252,6 +258,26 @@ class FrontendUserUtility implements SingletonInterface
         $frontendUser = $this->frontendUserRepository->findByIdentifier($GLOBALS['TSFE']->fe_user->user['uid']);
         if ($frontendUser instanceof FrontendUser) {
             foreach ($values as $property => $value) {
+                if (($property == 'image') && !($value instanceof ObjectStorage)) {
+                    $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+                    $images        = $objectManager->get(ObjectStorage::class);
+                    switch (true) {
+                        case ($value instanceof FileReference):
+                            $images->attach($value);
+                            break;
+                        case ($value instanceof \TYPO3\CMS\Core\Resource\FileReference):
+                            $extbaseImage = new FileReference();
+                            $extbaseImage->setOriginalResource($value);
+                            $images->attach($extbaseImage);
+                            break;
+                        case (!empty(GeneralUtility::_GP('delete_image')));
+                            break;
+                        default:
+                            continue 2;
+                            break;
+                    }
+                    $value = $images;
+                }
                 $propertySetter = 'set'.ucfirst($property);
                 if (is_callable([$frontendUser, $propertySetter])) {
                     $frontendUser->$propertySetter($value);
