@@ -31,11 +31,17 @@ use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
+use Tollwerk\TwUser\Hook\RegistrationFormHook;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 class RegistrationFormFactory extends AbstractFormFactory
 {
+    protected $identifier = 'frontendUserRegistration';
+
     /**
      * Build a form definition, depending on some configuration.
      *
@@ -79,6 +85,18 @@ class RegistrationFormFactory extends AbstractFormFactory
             'pageUid' => $GLOBALS['TSFE']->id,
             'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
         ]);
+
+        // Hook for frontend user registration action
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['registrationForm'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof RegistrationFormHook)) {
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][registrationForm] does not implement the RegistrationFormHook interface', $className),
+                    1556279202
+                );
+            }
+            $_procObj->registrationFormHook($form);
+        }
 
         // Return everything
         $this->triggerFormBuildingFinished($form);
