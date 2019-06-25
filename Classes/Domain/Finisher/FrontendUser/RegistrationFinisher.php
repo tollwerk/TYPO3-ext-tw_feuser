@@ -26,8 +26,10 @@
 
 namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
+use Tollwerk\TwUser\Hook\RegistrationFinisherHook;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
 /**
@@ -40,9 +42,21 @@ class RegistrationFinisher extends RedirectFinisher
     {
         // Get some objects and properties
         $formRuntime = $this->finisherContext->getFormRuntime();
-        $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
+        $frontendUserProperties = ['email' => $formRuntime->getElementValue('email')];
 
-        // Create FrontendUser
-        $frontendUserUtility->createFrontendUser(['email' => $formRuntime->getElementValue('email')]);
+        // Hook for manipulating the $frontendUserProperties array which is used to set FrontendUser properties
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['registrationFinisher'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof RegistrationFinisherHook)) {
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][registrationFinisher] does not implement the RegistrationFinisherHook interface', $className),
+                    1561469421
+                );
+            }
+            $_procObj->registrationFinisherHook($formRuntime, $frontendUserProperties);
+        }
+
+        $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
+        $frontendUserUtility->createFrontendUser($frontendUserProperties);
     }
 }

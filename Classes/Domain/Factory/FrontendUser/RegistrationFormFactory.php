@@ -86,7 +86,7 @@ class RegistrationFormFactory extends AbstractFormFactory
             'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
         ]);
 
-        // Hook for frontend user registration action
+        // Hook for manipulating the form definition
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['registrationForm'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
             if (!($_procObj instanceof RegistrationFormHook)) {
