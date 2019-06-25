@@ -84,13 +84,12 @@ class FrontendUserUtility implements SingletonInterface
     }
 
     /**
-     * @param string $email
+     * @param array $properties
      *
      * @return bool
      */
-    public function createFrontendUser(array $properties): bool
+    public function createFrontendUser(array $properties = []): bool
     {
-        debug($properties);
         if (empty($properties['email'])) {
             throw new \InvalidArgumentException('No email or username found given in properties. Can not create a new user without those two values', 1561466312);
         }
