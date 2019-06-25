@@ -43,6 +43,6 @@ class RegistrationFinisher extends RedirectFinisher
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
 
         // Create FrontendUser
-        $frontendUserUtility->createFrontendUser($formRuntime->getElementValue('email'));
+        $frontendUserUtility->createFrontendUser(['email' => $formRuntime->getElementValue('email')]);
     }
 }

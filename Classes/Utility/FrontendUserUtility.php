@@ -88,15 +88,32 @@ class FrontendUserUtility implements SingletonInterface
      *
      * @return bool
      */
-    public function createFrontendUser(string $email): bool
+    public function createFrontendUser(array $properties): bool
     {
+        debug($properties);
+        if (empty($properties['email'])) {
+            throw new \InvalidArgumentException('No email or username found given in properties. Can not create a new user without those two values', 1561466312);
+        }
+
+        // Get email. Remove from $properties afterwards for automatic processing of all other values
+        $email = $properties['email'];
+        unset($properties['email']);
+
+        // Get username. Remove from $properties afterwards for automatic processing of all other values
+        if (!empty($properties['username'])) {
+            $username = $properties['username'];
+            unset($properties['username']);
+        } else {
+            $username = $email;
+        }
+
         // Check if user already exists. If not, create one.
-        $frontendUser = $this->frontendUserRepository->findOneByUsername($email, true);
+        $frontendUser = $this->frontendUserRepository->findOneByUsername($username, true);
         if (!$frontendUser) {
             // Create frontend user object
             /** @var FrontendUser $frontendUser */
             $frontendUser = $this->objectManager->get(FrontendUser::class);
-            $frontendUser->setUsername($email);
+            $frontendUser->setUsername($username);
             $frontendUser->setEmail($email);
             $frontendUser->setPid($this->settings['feuser']['registration']['pid']);
             $frontendUser->setDisabled(true);
@@ -105,6 +122,15 @@ class FrontendUserUtility implements SingletonInterface
             $userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['feuser']['registration']['groupUid']);
             if ($userGroup) {
                 $frontendUser->addUsergroup($userGroup);
+            }
+
+            // Automatically process all values left inside $properties
+            foreach ($properties as $propertyName => $propertyValue) {
+                $method = 'set'.ucfirst($propertyName);
+                if(!is_callable([$frontendUser, $method])){
+                    continue;
+                }
+                $frontendUser->{$method}($propertyValue);
             }
 
             // Create and set password
