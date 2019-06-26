@@ -132,8 +132,13 @@ class FrontendUserUtility implements SingletonInterface
                 $frontendUser->{$method}($propertyValue);
             }
 
-            // Create and set password
-            $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
+            // Create and/or set password
+            if(isset($properties['password'])) {
+                $password = $properties['password'];
+                unset($properties['password']);
+            } else {
+                $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
+            }
             $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($password));
             $this->frontendUserRepository->add($frontendUser);
             $this->persistenceManager->persistAll();
