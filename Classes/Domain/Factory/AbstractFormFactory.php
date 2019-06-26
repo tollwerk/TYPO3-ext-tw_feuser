@@ -109,6 +109,7 @@ abstract class AbstractFormFactory extends \TYPO3\CMS\Form\Domain\Factory\Abstra
         // Create form definition
         /** @var \TYPO3\CMS\Form\Domain\Model\FormDefinition $form */
         $form = $this->objectManager->get($this->formDefinition, $this->identifier, $prototypeConfiguration);
+        $form->setRenderingOption('honeypot', ['enable' => false]);
         return $form;
     }
 }
