@@ -82,7 +82,7 @@ class RegistrationFormFactory extends AbstractFormFactory
         // Add finishers
         $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));
         $form->createFinisher('Redirect', [
-            'pageUid' => $GLOBALS['TSFE']->id,
+            'pageUid' => (!empty($this->settings['feuser']['registration']['confirmPid'])) ? $this->settings['feuser']['registration']['confirmPid'] : $GLOBALS['TSFE']->id,
             'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
         ]);
 

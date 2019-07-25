@@ -34,6 +34,9 @@
             <trans-unit id="feuser.registration.pluginPid">
                 <source>Registration | The Page with registration plugin</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.confirmPid">
+                <source>Registration | The confirmation Page</source>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
             </trans-unit>
