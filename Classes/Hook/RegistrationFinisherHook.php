@@ -40,5 +40,5 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 interface RegistrationFinisherHook
 {
-    public function registrationFinisherHook(FormRuntime $formRuntime, array &$frontendUserProperties);
+    public function registrationFinisherHook(FormRuntime $form, array &$frontendUserProperties);
 }
