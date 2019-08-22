@@ -46,6 +46,7 @@ class RegistrationFinisher extends RedirectFinisher
 
         // Hook for manipulating the $frontendUserProperties array which is used to set FrontendUser properties
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['registrationFinisher'] ?? [] as $className) {
+            /** @var RegistrationFinisherHook $_procObj */
             $_procObj = GeneralUtility::makeInstance($className);
             if (!($_procObj instanceof RegistrationFinisherHook)) {
                 throw new Exception(
