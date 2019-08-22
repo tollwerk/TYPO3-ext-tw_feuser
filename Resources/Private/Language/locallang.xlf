@@ -4,6 +4,7 @@
           product-name="tw_user">
         <header/>
         <body>
+            <!-- Registration form -->
             <trans-unit id="feuser.registration.form.email">
                 <source>Email</source>
             </trans-unit>
@@ -64,6 +65,32 @@
 
                     If you do not wish to register anymore you can simply ignore this message.
                 </source>
+            </trans-unit>
+
+            <!-- Profile update form -->
+            <trans-unit id="feuser.profile.form.submit">
+                <source>Update</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.givenName">
+                <source>Given name</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.givenName.placeholder">
+                <source>John</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.familyName">
+                <source>Family name</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.familyName.placeholder">
+                <source>Doe</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.success.message">
+                <source>Profile updated</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.success.message">
+                <source>Your successfully updated your profile.</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.error.title">
+                <source>Sorry but there was an error updating your profile.</source>
             </trans-unit>
         </body>
     </file>

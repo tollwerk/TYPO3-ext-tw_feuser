@@ -54,6 +54,11 @@
             <trans-unit id="plugin.feuser.registration.doubleOptIn">
                 <source>Enable Double-Opt-In</source>
             </trans-unit>
+
+            <!-- Plugin: FeuserProfile -->
+            <trans-unit id="plugin.feuser.profile">
+                <source>tollwerk User | Frontend User Profile</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

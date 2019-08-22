@@ -30,13 +30,15 @@ namespace Tollwerk\TwUser\Controller;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Tollwerk\TwBase\Utility\LocalizationUtility;
 
 class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     const REGISTRATION_SUBMITTED = 'submitted';
     const REGISTRATION_CONFIRMATION_SUCCESS = 'success';
     const REGISTRATION_CONFIRMATION_ERROR = 'error';
+    const PROFILE_UPDATE_ERROR = 'error';
+    const PROFILE_UPDATE_SUCCESS = 'success';
 
     /** @var FrontendUserRepository */
     protected $frontendUserRepository = null;
@@ -72,6 +74,8 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
+     * Register a new feuser
+     *
      * @param string $status
      */
     public function registrationAction(string $status = null)
@@ -87,14 +91,41 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.success.message', 'TwUser'),
                     LocalizationUtility::translate('feuser.registration.status.success.title', 'TwUser'),
-                    FlashMessage::OK);                break;
+                    FlashMessage::OK);
+                break;
             case self::REGISTRATION_CONFIRMATION_ERROR:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.registration.status.error.message', 'TwUser'),
                     LocalizationUtility::translate('feuser.registration.status.error.title', 'TwUser'),
-                    FlashMessage::OK);                break;
+                    FlashMessage::ERROR);
+                break;
         }
 
         $this->view->assign('registrationStatus', $status);
+    }
+
+    /**
+     * Update the feuser profile
+     *
+     * @param string $status
+     */
+    public function profileAction(string $status = null)
+    {
+        switch ($status) {
+            case self::PROFILE_UPDATE_SUCCESS:
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('feuser.profile.status.update.success.message', 'TwUser'),
+                    '',
+                    FlashMessage::OK);
+                break;
+            case self::PROFILE_UPDATE_ERROR:
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('feuser.profile.status.update.error.message', 'TwUser'),
+                    '',
+                    FlashMessage::ERROR);
+                break;
+        }
+
+        $this->view->assign('status', $status);
     }
 }

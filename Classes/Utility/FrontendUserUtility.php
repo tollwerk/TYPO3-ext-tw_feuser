@@ -84,6 +84,9 @@ class FrontendUserUtility implements SingletonInterface
     }
 
     /**
+     * Create a new, disabled frontend user
+     * and send double-opt-in mail
+     *
      * @param array $properties
      *
      * @return bool
@@ -190,6 +193,33 @@ class FrontendUserUtility implements SingletonInterface
                 'Plaintext'
             )
         );
+        return true;
+    }
+
+    /**
+     * Update a frontend user
+     *
+     * @param FrontendUser|null $frontendUser
+     * @param array $properties
+     *
+     * @return bool
+     */
+    public function updateFrontendUser(FrontendUser $frontendUser = null, array $properties = []) : bool {
+        if(!$frontendUser){
+            return false;
+        }
+
+        // Automatically process all values inside $properties
+        foreach ($properties as $propertyName => $propertyValue) {
+            $method = 'set'.ucfirst($propertyName);
+            if(!is_callable([$frontendUser, $method])){
+                continue;
+            }
+            $frontendUser->{$method}($propertyValue);
+        }
+
+        $this->frontendUserRepository->update($frontendUser);
+        $this->persistenceManager->persistAll();
         return true;
     }
 }
