@@ -41,14 +41,12 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 interface ProfileFinisherHook
 {
     /**
-     * Use this hook to manipulate the $frontenUserProperties array.
-     * The array indices are the property names of the \Tollwerk\TwUser\Domain\Model\FrontenUser
-     * which should be set
+     * Use this hook to manipulate properties
+     * which should be set when updating a new FrontendUser.
      *
-     * @param FormRuntime $form
-     * @param array $frontendUserProperties
-     *
-     * @return void
+     * @param FormRuntime $form             You can retrieve all submitted form data from here
+     * @param array $frontendUserProperties The array indices are the property names of the
+     *                                      \Tollwerk\TwUser\Domain\Model\FrontenUser
      */
     public function profileFinisherHook(FormRuntime $form, array &$frontendUserProperties): void;
 }

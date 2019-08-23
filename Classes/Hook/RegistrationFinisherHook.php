@@ -40,5 +40,13 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 interface RegistrationFinisherHook
 {
-    public function registrationFinisherHook(FormRuntime $form, array &$frontendUserProperties);
+    /**
+     * Use this hook to manipulate properties
+     * which should be set when creating a new FrontendUser.
+     *
+     * @param FormRuntime $form             You can retrieve all submitted form data from here
+     * @param array $frontendUserProperties The array indices are the property names of the
+     *                                      \Tollwerk\TwUser\Domain\Model\FrontenUser
+     */
+    public function registrationFinisherHook(FormRuntime $form, array &$frontendUserProperties): void;
 }
