@@ -36,12 +36,15 @@
 namespace Tollwerk\TwUser\Hook;
 
 
+use Tollwerk\TwUser\Domain\Model\FrontendUser;
+
 interface ProfileFormHook
 {
     /**
-     * @param object $form Should be an instance of TYPO3\CMS\Form\Domain\Model\FormDefinition
+     * Use this hook to manipulate the profile form
      *
-     * @return mixed
+     * @param object $form Should be an instance of TYPO3\CMS\Form\Domain\Model\FormDefinition
+     * @param FrontendUser $frontendUser
      */
-    public function profileFormHook(object &$form);
+    public function profileFormHook(object &$form, FrontendUser $frontendUser) : void;
 }

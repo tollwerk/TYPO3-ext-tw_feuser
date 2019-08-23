@@ -85,7 +85,7 @@ class ProfileFinisher extends RedirectFinisher
                     1561469421
                 );
             }
-            $_procObj->profileFinisherFinisherHook($formRuntime, $frontendUserProperties);
+            $_procObj->profileFinisherHook($formRuntime, $frontendUserProperties);
         }
 
         // Update the frontend user

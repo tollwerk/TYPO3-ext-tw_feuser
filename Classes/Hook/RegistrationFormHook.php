@@ -38,9 +38,9 @@ namespace Tollwerk\TwUser\Hook;
 interface RegistrationFormHook
 {
     /**
-     * @param object $form Should be an instance of TYPO3\CMS\Form\Domain\Model\FormDefinition
+     * Use this hook to manipulate the profile form
      *
-     * @return mixed
+     * @param object $form Should be an instance of TYPO3\CMS\Form\Domain\Model\FormDefinition
      */
-    public function registrationFormHook(object &$form);
+    public function registrationFormHook(object &$form): void;
 }

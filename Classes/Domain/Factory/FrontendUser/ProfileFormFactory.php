@@ -124,7 +124,7 @@ class ProfileFormFactory extends AbstractFormFactory
                     1556279202
                 );
             }
-            $_procObj->profileFormHook($form);
+            $_procObj->profileFormHook($form, $frontendUser);
         }
 
         // Return everything
