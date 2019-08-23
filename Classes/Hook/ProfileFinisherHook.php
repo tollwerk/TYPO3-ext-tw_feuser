@@ -40,5 +40,15 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 interface ProfileFinisherHook
 {
-    public function registrationFinisherHook(FormRuntime $form, array &$frontendUserProperties);
+    /**
+     * Use this hook to manipulate the $frontenUserProperties array.
+     * The array indices are the property names of the \Tollwerk\TwUser\Domain\Model\FrontenUser
+     * which should be set
+     *
+     * @param FormRuntime $form
+     * @param array $frontendUserProperties
+     *
+     * @return void
+     */
+    public function profileFinisherHook(FormRuntime $form, array &$frontendUserProperties): void;
 }
