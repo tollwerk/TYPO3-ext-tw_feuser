@@ -61,7 +61,7 @@
                 <target><![CDATA[
                     <p>Danke für Ihre Registrierung. Um diese abzuschließen, klicken Sie bitte auf den folgenden Link:</p>
                     <blockquote>
-                        <a href="%s" target="_blank">Registrierung abschließen</a>
+                        <a href="%s" data-href="%s" target="_blank">Registrierung abschließen</a>
                     </blockquote>
                     <p>Danach können Sie sich mit folgenden Zugangsdaten anmelden:</p>
                     <blockquote>
