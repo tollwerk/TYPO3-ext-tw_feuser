@@ -28,7 +28,12 @@
 namespace Tollwerk\TwUser\Controller;
 
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use Tollwerk\TwUser\Hook\ConfirmRegistrationHook;
+use Tollwerk\TwUser\Hook\RegistrationFormHook;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use Tollwerk\TwBase\Utility\LocalizationUtility;
 
@@ -54,27 +59,47 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
+     * Process the registration double-opt-in confirmation code.
+     * Enable the FrontendUser if everything is valid. Then,
+     * forward or redirect to somehere else
+     * with the confirmation status as parameter
+     *
      * @param string $code
      */
     public function confirmRegistrationAction(string $code)
     {
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
+
+
         if ($frontendUser) {
             $frontendUser->setDisabled(false);
             $this->frontendUserRepository->update($frontendUser);
             $this->objectManager->get(PersistenceManager::class)->persistAll();
-            $this->forward('registration', null, null, [
-                'status' => self::REGISTRATION_CONFIRMATION_SUCCESS
-            ]);
+            $status = self::REGISTRATION_CONFIRMATION_SUCCESS;
+        } else {
+            $status = self::REGISTRATION_CONFIRMATION_ERROR;
+        }
+
+        // Hook for manipulating the registration confirmation
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['confirmRegistration'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            if (!($_procObj instanceof ConfirmRegistrationHook)) {
+                throw new Exception(
+                    sprintf('The registered class %s for hook [ext/tw_user][confirmRegistration] does not implement the ConfirmRegistrationHook interface', $className),
+                    1556279202
+                );
+            }
+            $_procObj->confirmRegistrationHook($status);
         }
 
         $this->forward('registration', null, null, [
-            'status' => self::REGISTRATION_CONFIRMATION_ERROR
+            'status' => $status
         ]);
     }
 
     /**
-     * Register a new feuser
+     * Register a new feuser.
+     * The registration form get's rendered inside this view.
      *
      * @param string $status
      */
@@ -105,7 +130,8 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
-     * Update the feuser profile
+     * Show the user profile.
+     * The user profile form get's rendered inside this view.
      *
      * @param string $status
      */
