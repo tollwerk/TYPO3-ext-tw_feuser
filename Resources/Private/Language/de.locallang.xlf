@@ -4,13 +4,14 @@
           product-name="tw_user">
         <header/>
         <body>
+            <!-- Registration form -->
             <trans-unit id="feuser.registration.form.email">
                 <source>Email</source>
                 <target>E-Mail</target>
             </trans-unit>
             <trans-unit id="feuser.registration.form.email.placeholder">
                 <source>john@doe.com</source>
-                <target>max.mustermann@test.de</target>
+                <target>max@mustermann.de</target>
             </trans-unit>
             <trans-unit id="feuser.registration.form.submit">
                 <source>Register now</source>
@@ -21,18 +22,16 @@
                 <target>Danke für Ihre Registrierung</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.submitted.message">
-                <source>We have sent you an email. Please click on the confirmation link inside to finish your
-                    registration.
-                </source>
-                <target>Sie erhalten in Kürze eine E-Mail von uns. Bitte klicken Sie darin auf den Bestätigungslink, um Ihre Registrierung erfolgreich abzuschließen.</target>
+                <source>We have sent you an email. Please click on the confirmation link inside to finish your registration.</source>
+                <target>Sie haben eine E-Mail erhalten. Bitte klicken Sie dort auf den Bestätigungslink, um Ihre Registrierung abzuschließen.</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.success.title">
                 <source>Registration confirmed</source>
-                <target>Registrierung bestätigt</target>
+                <target>Registrierung abgeschlossen</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.success.message">
                 <source>Thank you for confirming your registration. You can now sign in to the website.</source>
-                <target>Vielen Dank für die Bestätigung Ihrer Registrierung. Sie können sich nun mit Ihren Zugangsdaten anmelden.</target>
+                <target>Vielen Dank, Sie haben Ihre Registrierung hiermit abgeschlossen und können sich nun mit Ihren Zugangsdaten anmelden.</target>
             </trans-unit>
             <trans-unit id="feuser.registration.status.error.title">
                 <source>Registration error</source>
@@ -40,7 +39,7 @@
             </trans-unit>
             <trans-unit id="feuser.registration.status.error.message">
                 <source>We are sorry but there was an error. Please contact us directly if this keeps happening.</source>
-                <target>Es tut uns leid, aber bei Ihrer Registrierung gab es einen Fehler. Bitte kontaktieren Sie uns direkt, falls dies wiederholt vorkommt.</target>
+                <target>Es tut uns leid, aber bei Ihrer Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal oder kontaktieren Sie uns direkt. Vielen Dank für Ihr Verständnis.</target>
             </trans-unit>
             <trans-unit id="feuser.registration.email.subject">
                 <source>Please confirm your registration</source>
@@ -59,6 +58,18 @@
                     </blockquote>
                      <p>If you do not wish to register anymore you can simply ignore this message.</p>
                 ]]></source>
+                <target><![CDATA[
+                    <p>Danke für Ihre Registrierung. Um diese abzuschließen, klicken Sie bitte auf den folgenden Link:</p>
+                    <blockquote>
+                        <a href="%s" target="_blank">Registrierung abschließen</a>
+                    </blockquote>
+                    <p>Danach können Sie sich mit folgenden Zugangsdaten anmelden:</p>
+                    <blockquote>
+                        <strong>Benutzername:</strong> %s<br />
+                        <strong>Passwort:</strong> %s
+                    </blockquote>
+                     <p>Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail einfach ignorieren.</p>
+                ]]></target>
             </trans-unit>
             <trans-unit id="feuser.registration.email.body.plaintext">
                 <source>
@@ -73,6 +84,51 @@
 
                     If you do not wish to register anymore you can simply ignore this message.
                 </source>
+                <target>
+Danke für Ihre Registrierung. Um diese abzuschließen, klicken Sie bitte auf den folgenden Link:
+
+%s
+
+Danach können Sie sich mit folgenden Zugangsdaten anmelden:
+Benutzername: %s
+Passwort: %s
+
+Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail einfach ignorieren.
+                </target>
+            </trans-unit>
+
+            <!-- Profile update form -->
+            <trans-unit id="feuser.profile.form.submit">
+                <source>Update</source>
+                <target>Aktualisieren</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.givenName">
+                <source>Given name</source>
+                <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.givenName.placeholder">
+                <source>John</source>
+                <target>Max</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.familyName">
+                <source>Family name</source>
+                <target>Nachname</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.familyName.placeholder">
+                <source>Doe</source>
+                <target>Mustermann</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.success.message">
+                <source>Profile updated</source>
+                <target>Profil aktualisiert</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.success.message">
+                <source>Your successfully updated your profile.</source>
+                <target>Sie haben Ihr Profil erfolgreich aktualisiert.</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.status.update.error.title">
+                <source>Sorry but there was an error updating your profile.</source>
+                <target>Entschuldigung, aber Ihr Profil konnte nicht erfolgreich aktualisiert werden.</target>
             </trans-unit>
         </body>
     </file>
