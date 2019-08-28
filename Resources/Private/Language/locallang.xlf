@@ -103,6 +103,12 @@
             <trans-unit id="feuser.password.form.password.placeholder">
                 <source>Your new password</source>
             </trans-unit>
+            <trans-unit id="feuser.password.form.confirmPassword">
+                <source>Repeat password</source>
+            </trans-unit>
+            <trans-unit id="feuser.password.form.confirmPassword.placeholder">
+                <source>The same password as above</source>
+            </trans-unit>
             <trans-unit id="feuser.password.status.success">
                 <source>You successfully changed your password.</source>
             </trans-unit>

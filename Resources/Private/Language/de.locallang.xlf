@@ -152,6 +152,10 @@ Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail ei
                 <source>Sorry, but there was an error changing your password</source>
                 <target>Entschuldigung, aber Ihr Passwort konnte nicht geändert werden</target>
             </trans-unit>
+            <trans-unit id="feuser.password.form.confirmPassword">
+                <source>Repeat password</source>
+                <target>Passwort wiederholen</target>
+            </trans-unit>
 
             <!-- Validators -->
             <trans-unit id="validator.password.minLength.error">

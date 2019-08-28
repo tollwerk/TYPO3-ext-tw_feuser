@@ -80,6 +80,7 @@ class PasswordFormFactory extends AbstractFormFactory
             'minlength' => $passwordValidatorOptions['minLength'],
         ]);
         $passwordField->addValidator($passwordValidator);
+        $passwordField->setProperty('confirmationLabel', $this->translate('feuser.password.form.confirmPassword'));
 
         // Add finishers
         $form->addFinisher($this->objectManager->get(PasswordFinisher::class));
