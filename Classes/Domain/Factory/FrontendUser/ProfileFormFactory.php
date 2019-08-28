@@ -50,6 +50,14 @@ use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
+/**
+ * ProfileFormFactory
+ *
+ * Update the user profile
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Factory\FrontendUser
+ */
 class ProfileFormFactory extends AbstractFormFactory
 {
     protected $identifier = 'frontendUserProfile';

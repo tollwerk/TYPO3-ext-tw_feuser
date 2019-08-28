@@ -38,6 +38,14 @@ use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
+/**
+ * RegistrationFormFactory
+ *
+ * Frontend user registration
+ *
+ * @package    Tollwerk\TwUser
+ * @subpackage Tollwerk\TwUser\Domain\Factory\FrontendUser
+ */
 class RegistrationFormFactory extends AbstractFormFactory
 {
     protected $identifier = 'frontendUserRegistration';
