@@ -35,19 +35,13 @@
 
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
-
-use Tollwerk\TwBase\Domain\Validator\UniqueObjectValidator;
-use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\ProfileFinisher;
-use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\ProfileFormHook;
-use Tollwerk\TwUser\Hook\RegistrationFormHook;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Exception;
-use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 /**

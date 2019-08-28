@@ -38,6 +38,8 @@ namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\PasswordFinisher;
+use Tollwerk\TwUser\Domain\Validator\PasswordValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 /**
@@ -67,9 +69,15 @@ class PasswordFormFactory extends AbstractFormFactory
 
         // Create page and form fields
         $page = $form->createPage('password');
+        $passwordValidator = $this->objectManager->get(PasswordValidator::class);
+        $passwordValidatorOptions = $passwordValidator->getOptions();
         $passwordField = $page->createElement('password', 'AdvancedPassword');
         $passwordField->setLabel($this->translate('feuser.password.form.password'));
-        $passwordField->setProperty('fluidAdditionalAttributes', ['placeholder' => $this->translate('feuser.password.form.password.placeholder')]);
+        $passwordField->setProperty('fluidAdditionalAttributes', [
+            'placeholder' => $this->translate('feuser.password.form.password.placeholder'),
+            'minlength' => $passwordValidatorOptions['minLength'],
+        ]);
+        $passwordField->addValidator($passwordValidator);
 
         // Add finishers
         $form->addFinisher($this->objectManager->get(PasswordFinisher::class));

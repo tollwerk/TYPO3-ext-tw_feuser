@@ -144,6 +144,20 @@ Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail ei
                 <source>Your new password</source>
                 <target>Ihr neues Passwort</target>
             </trans-unit>
+            <trans-unit id="feuser.password.status.success">
+                <source>You successfully changed your password</source>
+                <target>Sie haben Ihr Passwort erfolgreich geändert</target>
+            </trans-unit>
+            <trans-unit id="feuser.password.status.error">
+                <source>Sorry, but there was an error changing your password</source>
+                <target>Entschuldigung, aber Ihr Passwort konnte nicht geändert werden</target>
+            </trans-unit>
+
+            <!-- Validators -->
+            <trans-unit id="validator.password.minLength.error">
+                <source>Your password is too short. Please use at least %s characters.</source>
+                <target>Ihr Passwort ist zu kurz. Bitte nutzen Sie mindestens %s Zeichen.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

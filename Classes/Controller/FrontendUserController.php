@@ -42,8 +42,12 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     const REGISTRATION_SUBMITTED = 'submitted';
     const REGISTRATION_CONFIRMATION_SUCCESS = 'success';
     const REGISTRATION_CONFIRMATION_ERROR = 'error';
+
     const PROFILE_UPDATE_ERROR = 'error';
     const PROFILE_UPDATE_SUCCESS = 'success';
+
+    const CHANGE_PASSWORD_SUCCESS = 'success';
+    const CHANGE_PASSWORD_ERROR = 'error';
 
     /** @var FrontendUserRepository */
     protected $frontendUserRepository = null;
@@ -156,9 +160,29 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
-     * Change the password
+     * Change the user password
+     *
+     * @param string $status
      */
-    public function passwordAction() : void
+    public function passwordAction(string $status = null) : void
     {
+        switch ($status){
+            case self::CHANGE_PASSWORD_SUCCESS:
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('feuser.password.status.success', 'TwUser'),
+                    '',
+                    FlashMessage::OK
+                );
+                break;
+            case self::CHANGE_PASSWORD_ERROR:
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('feuser.password.status.error', 'TwUser'),
+                    '',
+                    FlashMessage::ERROR
+                );
+                break;
+        }
+
+        $this->view->assign('status', $status);
     }
 }

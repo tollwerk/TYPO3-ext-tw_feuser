@@ -30,7 +30,6 @@ use Tollwerk\TwBase\Domain\Validator\UniqueObjectValidator;
 use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
-use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\FrontendUserHookInterface;
 use Tollwerk\TwUser\Hook\RegistrationFormHook;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

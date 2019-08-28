@@ -32,7 +32,7 @@
                 <source>Registration error</source>
             </trans-unit>
             <trans-unit id="feuser.registration.status.error.message">
-                <source>We are sorry but there was an error. Please contact us directly if this keeps happening.
+                <source>Sorry, but there was an error. Please contact us directly if this keeps happening.
                 </source>
             </trans-unit>
             <trans-unit id="feuser.registration.email.subject">
@@ -90,7 +90,7 @@
                 <source>Your successfully updated your profile.</source>
             </trans-unit>
             <trans-unit id="feuser.profile.status.update.error.title">
-                <source>Sorry but there was an error updating your profile.</source>
+                <source>Sorry, but there was an error updating your profile.</source>
             </trans-unit>
 
             <!-- Change password -->
@@ -102,6 +102,17 @@
             </trans-unit>
             <trans-unit id="feuser.password.form.password.placeholder">
                 <source>Your new password</source>
+            </trans-unit>
+            <trans-unit id="feuser.password.status.success">
+                <source>You successfully changed your password.</source>
+            </trans-unit>
+            <trans-unit id="feuser.password.status.error">
+                <source>Sorry, but there was an error changing your password.</source>
+            </trans-unit>
+
+            <!-- Validators -->
+            <trans-unit id="validator.password.minLength.error">
+                <source>Your password is too short. Please use at least %s characters.</source>
             </trans-unit>
         </body>
     </file>

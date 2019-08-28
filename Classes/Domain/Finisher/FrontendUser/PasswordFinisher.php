@@ -36,6 +36,16 @@
 namespace Tollwerk\TwUser\Domain\Finisher\FrontendUser;
 
 
+use Tollwerk\TwUser\Controller\FrontendUserController;
+use Tollwerk\TwUser\Domain\Factory\FrontendUser\PasswordFormFactory;
+use Tollwerk\TwUser\Domain\Model\FrontendUser;
+use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 
 /**
@@ -46,8 +56,45 @@ use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
  */
 class PasswordFinisher extends RedirectFinisher
 {
+    /**
+     * @var array
+     */
+    protected $defaultOptions = [
+        'frontendUserUid' => null
+    ];
+
     public function executeInternal()
     {
-        die("Password change");
+        // Get the  properties we want to set
+        $formRuntime = $this->finisherContext->getFormRuntime();
+
+        // Get the frontend user we want to update
+        $frontendUserUid = $this->options['frontendUserUid'] ?: ($GLOBALS['TSFE']->fe_user->user ? $GLOBALS['TSFE']->fe_user->user['uid'] : null);
+        /** @var FrontendUser $frontendUser */
+        $frontendUser = $frontendUserUid ? $this->objectManager->get(FrontendUserRepository::class)->findByUid($frontendUserUid) : null;
+
+        // Set the new password
+        if($frontendUser){
+            $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($formRuntime->getElementValue('password')));
+            $this->objectManager->get(FrontendUserRepository::class)->update($frontendUser);
+            $this->objectManager->get(PersistenceManager::class)->persistAll();
+            $updateStatus = FrontendUserController::CHANGE_PASSWORD_SUCCESS;
+        } else {
+            $updateStatus = FrontendUserController::CHANGE_PASSWORD_ERROR;
+        }
+
+        // Redirect
+        $this->request = $formRuntime->getRequest();
+        $this->response = $formRuntime->getResponse();
+        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $this->uriBuilder->setRequest($this->request);
+        $uri = $this->uriBuilder->reset()->uriFor(
+            'password',
+            [
+                'status' => $updateStatus
+            ]
+        );
+        $this->finisherContext->cancel();
+        $this->redirectToUri($uri);
     }
 }
