@@ -23,5 +23,11 @@ plugin.tx_twuser {
                 confirmPid = {$plugin.tx_twuser.settings.feuser.registration.confirmPid}
             }
         }
+
+        validation {
+            password {
+                minLength = {$plugin.tx_twuser.settings.validation.password.minLength}
+            }
+        }
     }
 }

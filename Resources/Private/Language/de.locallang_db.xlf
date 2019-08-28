@@ -62,6 +62,16 @@
                 <target>Absender Name</target>
             </trans-unit>
 
+            <!-- Validation -->
+            <trans-unit id="validation">
+                <source>Validation</source>
+                <target>Validierung</target>
+            </trans-unit>
+            <trans-unit id="validation.password.minLength">
+                <source>Password | Min. length</source>
+                <target>Passwort | Mindestlänge</target>
+            </trans-unit>
+
             <!-- Plugin: FeuserRegistration -->
             <trans-unit id="plugin.feuser.registration">
                 <source>tollwerk User | Frontend User Registration</source>

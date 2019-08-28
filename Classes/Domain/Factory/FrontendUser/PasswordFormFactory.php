@@ -69,7 +69,9 @@ class PasswordFormFactory extends AbstractFormFactory
 
         // Create page and form fields
         $page = $form->createPage('password');
-        $passwordValidator = $this->objectManager->get(PasswordValidator::class);
+        $passwordValidator = $this->objectManager->get(PasswordValidator::class, [
+            'minLength' => $this->settings['validation']['password']['minLength']
+        ]);
         $passwordValidatorOptions = $passwordValidator->getOptions();
         $passwordField = $page->createElement('password', 'AdvancedPassword');
         $passwordField->setLabel($this->translate('feuser.password.form.password'));
