@@ -92,6 +92,17 @@
             <trans-unit id="feuser.profile.status.update.error.title">
                 <source>Sorry but there was an error updating your profile.</source>
             </trans-unit>
+
+            <!-- Change password -->
+            <trans-unit id="feuser.password.form.submit">
+                <source>Change password</source>
+            </trans-unit>
+            <trans-unit id="feuser.password.form.password">
+                <source>Password</source>
+            </trans-unit>
+            <trans-unit id="feuser.password.form.password.placeholder">
+                <source>Your new password</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

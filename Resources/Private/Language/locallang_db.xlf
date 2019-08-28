@@ -59,6 +59,11 @@
             <trans-unit id="plugin.feuser.profile">
                 <source>tollwerk User | Frontend User Profile</source>
             </trans-unit>
+
+            <!-- Plugin: FeuserPassword -->
+            <trans-unit id="plugin.feuser.password">
+                <source>tollwerk User | Change password</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

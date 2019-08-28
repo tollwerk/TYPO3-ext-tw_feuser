@@ -66,7 +66,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $code
      */
-    public function confirmRegistrationAction(string $code)
+    public function confirmRegistrationAction(string $code) : void
     {
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
 
@@ -103,7 +103,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $status
      */
-    public function registrationAction(string $status = null)
+    public function registrationAction(string $status = null) : void
     {
         switch ($status) {
             case self::REGISTRATION_SUBMITTED:
@@ -135,7 +135,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $status
      */
-    public function profileAction(string $status = null)
+    public function profileAction(string $status = null) : void
     {
         switch ($status) {
             case self::PROFILE_UPDATE_SUCCESS:
@@ -153,5 +153,12 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         }
 
         $this->view->assign('status', $status);
+    }
+
+    /**
+     * Change the password
+     */
+    public function passwordAction() : void
+    {
     }
 }

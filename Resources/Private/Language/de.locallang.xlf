@@ -130,6 +130,20 @@ Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail ei
                 <source>Sorry but there was an error updating your profile.</source>
                 <target>Entschuldigung, aber Ihr Profil konnte nicht erfolgreich aktualisiert werden.</target>
             </trans-unit>
+
+            <!-- Change password -->
+            <trans-unit id="feuser.password.form.submit">
+                <source>Change password</source>
+                <target>Passwort ändern</target>
+            </trans-unit>
+            <trans-unit id="feuser.password.form.password">
+                <source>Password</source>
+                <target>Passwort</target>
+            </trans-unit>
+            <trans-unit id="feuser.password.form.password.placeholder">
+                <source>Your new password</source>
+                <target>Ihr neues Passwort</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
