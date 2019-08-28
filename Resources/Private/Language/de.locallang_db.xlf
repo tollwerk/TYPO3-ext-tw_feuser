@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z"
+          product-name="tw_user">
+        <header/>
+        <body>
+            <!-- Typoscript constant editor -->
+            <trans-unit id="file">
+                <source>Files and folders</source>
+                <target>Dateien und Ordner</target>
+            </trans-unit>
+            <trans-unit id="file.layoutRootPath">
+                <source>Layout Root Path</source>
+                <target>Layout Root Path</target>
+            </trans-unit>
+            <trans-unit id="file.templateRootPath">
+                <source>Template Root Path</source>
+                <target>Template Root Path</target>
+            </trans-unit>
+            <trans-unit id="file.partialRootPath">
+                <source>Partial Root Path</source>
+                <target>Partial Root Path</target>
+            </trans-unit>
+            <trans-unit id="common">
+                <source>Common</source>
+                <target>Allgemein</target>
+            </trans-unit>
+            <trans-unit id="common.storagePid">
+                <source>Storage PID</source>
+                <target>Storage PID</target>
+            </trans-unit>
+            <trans-unit id="feuser">
+                <source>Frontend User</source>
+                <target>Website-Benutzer</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.pid">
+                <source>Registration | The PID for fe_user records</source>
+                <target>Registrierung | Frontend-Benutzer PID</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.groupUid">
+                <source>Registration | The feuser group uid</source>
+                <target>Registrierung | Frontend-Benutzergruppen UID</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.pluginPid">
+                <source>Registration | The Page with registration plugin</source>
+                <target>Registrierung | Seite mit dem Registrierungs-Plugin</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.confirmPid">
+                <source>Registration | The confirmation Page</source>
+                <target>Registrierung | Bestätigungsseite</target>
+            </trans-unit>
+            <trans-unit id="email">
+                <source>Email</source>
+                <target>E-Mail</target>
+            </trans-unit>
+            <trans-unit id="email.senderAddress">
+                <source>Sender Address</source>
+                <target>Absender E-Mail</target>
+            </trans-unit>
+            <trans-unit id="email.senderName">
+                <source>Sender Name</source>
+                <target>Absender Name</target>
+            </trans-unit>
+
+            <!-- Plugin: FeuserRegistration -->
+            <trans-unit id="plugin.feuser.registration">
+                <source>tollwerk User | Frontend User Registration</source>
+                <target>tollwerk User | Frontend-Benutzer Registrierung</target>
+            </trans-unit>
+            <trans-unit id="plugin.feuser.registration.doubleOptIn">
+                <source>Enable Double-Opt-In</source>
+                <target>Double-Opt-In aktivieren</target>
+            </trans-unit>
+
+            <!-- Plugin: FeuserProfile -->
+            <trans-unit id="plugin.feuser.profile">
+                <source>tollwerk User | Frontend User Profile</source>
+                <target>tollwerk User | Frontend-Benutzer Profil bearbeiten</target>
+            </trans-unit>
+
+            <!-- Plugin: FeuserPassword -->
+            <trans-unit id="plugin.feuser.password">
+                <source>tollwerk User | Change password</source>
+                <target>tollwerk User | Passwort ändern</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
