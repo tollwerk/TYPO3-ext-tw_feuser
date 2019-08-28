@@ -38,7 +38,7 @@ namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\PasswordFinisher;
-use Tollwerk\TwUser\Domain\Validator\PasswordValidator;
+use Tollwerk\TwUser\Domain\Validation\Validator\PasswordValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 

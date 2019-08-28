@@ -31,7 +31,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Tollwerk\TwUser\Domain\Validator;
+namespace Tollwerk\TwUser\Domain\Validation\Validator;
 
 use Tollwerk\TwBase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
