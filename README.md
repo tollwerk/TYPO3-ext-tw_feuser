@@ -6,7 +6,7 @@ TYPO3 Frontend and backend user tools
 
 ## Features overview
 
-* Plugin: Frontend User - Registration (with double-opt-in
+* Plugin: Frontend User - Registration (with double-opt-in)
 * Plugin: Frontend User - Edit profile
 * Plugin: Frontend User - Change password
 
