@@ -13,6 +13,10 @@
                 <source>john@doe.com</source>
                 <target>max@mustermann.de</target>
             </trans-unit>
+            <trans-unit id="feuser.registration.form.email.error.unique">
+                <source>The email address is already taken</source>
+                <target>Diese Adresse ist bereits vergeben</target>
+            </trans-unit>
             <trans-unit id="feuser.registration.form.submit">
                 <source>Register now</source>
                 <target>Jetzt registrieren</target>

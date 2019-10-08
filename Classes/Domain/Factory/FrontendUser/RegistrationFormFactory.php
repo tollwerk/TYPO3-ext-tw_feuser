@@ -27,6 +27,7 @@
 namespace Tollwerk\TwUser\Domain\Factory\FrontendUser;
 
 use Tollwerk\TwBase\Domain\Validator\UniqueObjectValidator;
+use Tollwerk\TwBase\Utility\LocalizationUtility;
 use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Factory\AbstractFormFactory;
 use Tollwerk\TwUser\Domain\Finisher\FrontendUser\RegistrationFinisher;
@@ -84,6 +85,7 @@ class RegistrationFormFactory extends AbstractFormFactory
         $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
             'table' => 'fe_users',
             'fieldname' => 'username',
+            'errorMessage' => LocalizationUtility::translate('feuser.registration.form.email.error.unique','TwUser')
         ]));
 
         // Add finishers
