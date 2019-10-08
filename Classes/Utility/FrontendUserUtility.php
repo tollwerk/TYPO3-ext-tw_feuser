@@ -222,4 +222,16 @@ class FrontendUserUtility implements SingletonInterface
         $this->persistenceManager->persistAll();
         return true;
     }
+
+    /**
+     * @return FrontendUser|null
+     */
+    public function getCurrentFrontendUser(): ?FrontendUser
+    {
+        if (!$GLOBALS['TSFE']->fe_user->user) {
+            return null;
+        }
+        $frontendUser = $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+        return $frontendUser ?: null;
+    }
 }
