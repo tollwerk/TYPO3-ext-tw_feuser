@@ -78,6 +78,7 @@ class PasswordFormFactory extends AbstractFormFactory
         $passwordField->setProperty('fluidAdditionalAttributes', [
             'placeholder' => $this->translate('feuser.password.form.password.placeholder'),
             'minlength' => $passwordValidatorOptions['minLength'],
+            'required' => 'required',
         ]);
         $passwordField->addValidator($passwordValidator);
         $passwordField->setProperty('confirmationLabel', $this->translate('feuser.password.form.confirmPassword'));
