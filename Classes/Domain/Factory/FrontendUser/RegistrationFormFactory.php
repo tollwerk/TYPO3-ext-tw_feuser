@@ -88,12 +88,8 @@ class RegistrationFormFactory extends AbstractFormFactory
             'errorMessage' => LocalizationUtility::translate('feuser.registration.form.email.error.unique','TwUser')
         ]));
 
-        // Add finishers
+        // Add registration finisher for creating frontend user, triggering double-opt-in email etc.
         $form->addFinisher($this->objectManager->get(RegistrationFinisher::class));
-        $form->createFinisher('Redirect', [
-            'pageUid' => (!empty($this->settings['feuser']['registration']['confirmPid'])) ? $this->settings['feuser']['registration']['confirmPid'] : $GLOBALS['TSFE']->id,
-            'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
-        ]);
 
         // Hook for manipulating the form definition
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['registrationForm'] ?? [] as $className) {
@@ -106,6 +102,13 @@ class RegistrationFormFactory extends AbstractFormFactory
             }
             $_procObj->registrationFormHook($form);
         }
+
+        // Add other finishers after calling the hook
+        // so injected finishers always win against defined here.
+        $form->createFinisher('Redirect', [
+            'pageUid' => (!empty($this->settings['feuser']['registration']['confirmPid'])) ? $this->settings['feuser']['registration']['confirmPid'] : $GLOBALS['TSFE']->id,
+            'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
+        ]);
 
         // Return everything
         $this->triggerFormBuildingFinished($form);
