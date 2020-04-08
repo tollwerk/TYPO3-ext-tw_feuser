@@ -178,6 +178,7 @@ class FrontendUserUtility implements SingletonInterface
                     'confirmationUri' => $confirmationUri,
                     'username' => $frontendUser->getUsername(),
                     'password' => $password,
+                    'user' => $frontendUser,
                 ],
                 'html',
                 'Html'
@@ -188,6 +189,7 @@ class FrontendUserUtility implements SingletonInterface
                     'confirmationUri' => $confirmationUri,
                     'username' => $frontendUser->getUsername(),
                     'password' => $password,
+                    'user' => $frontendUser,
                 ],
                 'html',
                 'Plaintext'
