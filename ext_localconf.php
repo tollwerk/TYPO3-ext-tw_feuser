@@ -31,8 +31,8 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Tollwerk.TwUser',
             'Debug',
-            ['Debug' => 'index, confirmationEmail'],
-            ['Debug' => 'index, confirmationEmail']
+            ['Debug' => 'index, showConfirmationEmail, sendConfirmationEmail'],
+            ['Debug' => 'index, showConfirmationEmail, sendConfirmationEmail']
         );
 
         // Exclude parameters from cacheHash calculation

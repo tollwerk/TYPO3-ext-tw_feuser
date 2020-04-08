@@ -73,19 +73,21 @@ class DebugController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * Starting point for all debug actions
      *
      * @param string $statusMessage
+     * @param string $html
      */
-    public function indexAction(string $statusMessage = null)
+    public function indexAction(string $statusMessage = null, string $html = null)
     {
         $this->view->assignMultiple([
             'frontendUser' => $this->frontendUserRepository->findByUidNoRestrictions(82),
             'statusMessage' => $statusMessage,
+            'html' => $html,
         ]);
     }
 
     /**
      * Send confirmation email to debug feuser
      */
-    public function confirmationEmailAction()
+    public function sendConfirmationEmailAction()
     {
         $this->frontendUserUtility->sendConfirmationEmail(
             $this->frontendUserRepository->findByUidNoRestrictions($this->settings['debug']['feuserUid']),
@@ -98,6 +100,28 @@ class DebugController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             null,
             [
                 'statusMessage' => 'Registration confirmation email sent!'
+            ]
+        );
+    }
+
+    /**
+     * Show content of confirmation email
+     */
+    public function showConfirmationEmailAction(string $type = 'html')
+    {
+       $emailBody = $this->frontendUserUtility->createConfirmationEmailBody(
+           $frontendUser = $this->frontendUserRepository->findByUidNoRestrictions($this->settings['debug']['feuserUid']),
+           '0123456789xyz',
+           '#'
+       );
+
+        $this->forward(
+            'index',
+            null,
+            null,
+            [
+                'statusMessage' => 'Showing confirmation email: '.$type,
+                'html' => array_key_exists($type, $emailBody) ? $emailBody[$type] : null
             ]
         );
     }

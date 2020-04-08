@@ -3,16 +3,28 @@
       xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-    <f:debug inline="1" title="TwUser Debug">{_all}</f:debug>
+    <h1>TwUser Debug</h1>
+    <f:debug inline="1" title="Settings and objects">{_all}</f:debug>
 
     <ul>
         <li>
             <f:link.action action="index">Back to index</f:link.action>
         </li>
         <li>
-            <f:link.action action="confirmationEmail">Send registration confirmation Email</f:link.action>
+            <f:link.action action="sendConfirmationEmail">Send registration confirmation Email</f:link.action>
+        </li>
+        <li>
+            <f:link.action action="showConfirmationEmail" arguments="{type: 'html'}">Show registration confirmation Email: HTML</f:link.action>
+        </li>
+        <li>
+            <f:link.action action="showConfirmationEmail" arguments="{type: 'plaintext'}">Show registration confirmation Email: Plaintext</f:link.action>
         </li>
     </ul>
+
+    <f:if condition="{html}">
+        <h2></h2>
+        <f:format.raw>{html}</f:format.raw>
+    </f:if>
 
 
 </html>

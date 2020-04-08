@@ -182,14 +182,31 @@ class FrontendUserUtility implements SingletonInterface
                 'FeuserRegistration'
             );
 
-        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
-
         /** @var EmailUtility $emailUtility */
         $emailUtility = $this->objectManager->get(EmailUtility::class, $this->settings['email']['senderName'], $this->settings['email']['senderAddress']);
+        $emailBody = $this->createConfirmationEmailBody($frontendUser, $password, $confirmationUri);
         return $emailUtility->send(
             [$frontendUser->getEmail()],
             LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
-            $standaloneRenderer->render(
+            $emailBody['html'],
+            $emailBody['plaintext']
+        );
+    }
+
+    /**
+     * Create the email body
+     * for the registration confirmation email
+     *
+     * @param FrontendUser $frontendUser
+     * @param string $password
+     * @param string $confirmationUri
+     * @return array
+     */
+    public function createConfirmationEmailBody(FrontendUser $frontendUser, string $password, string $confirmationUri): array
+    {
+        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
+        return [
+            'html' => $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
                     'confirmationUri' => $confirmationUri,
@@ -200,7 +217,7 @@ class FrontendUserUtility implements SingletonInterface
                 'html',
                 'Html'
             ),
-            $standaloneRenderer->render(
+            'plaintext' => $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
                     'confirmationUri' => $confirmationUri,
@@ -210,8 +227,8 @@ class FrontendUserUtility implements SingletonInterface
                 ],
                 'html',
                 'Plaintext'
-            )
-        );
+            ),
+        ];
     }
 
     /**
