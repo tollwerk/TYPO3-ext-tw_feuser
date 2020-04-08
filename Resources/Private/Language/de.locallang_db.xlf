@@ -49,6 +49,10 @@
                 <source>Registration | The confirmation Page</source>
                 <target>Registrierung | Bestätigungsseite</target>
             </trans-unit>
+            <trans-unit id="feuser.registration.autologin">
+                <source>Registration | Automatic login on confirmation</source>
+                <target>Registrierung | Auto-Login bei Registrierungs-Bestätigung</target>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
                 <target>E-Mail</target>

@@ -37,6 +37,9 @@
             <trans-unit id="feuser.registration.confirmPid">
                 <source>Registration | The confirmation Page</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.autologin">
+                <source>Registration | Automatic login on confirmation</source>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
             </trans-unit>

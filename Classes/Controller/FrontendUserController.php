@@ -30,6 +30,7 @@ namespace Tollwerk\TwUser\Controller;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\ConfirmRegistrationHook;
 use Tollwerk\TwUser\Hook\RegistrationFormHook;
+use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -72,14 +73,20 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      */
     public function confirmRegistrationAction(string $code) : void
     {
+        // Find and activate the FrontendUser for this $code
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
-
-
         if ($frontendUser) {
+
             $frontendUser->setDisabled(false);
             $this->frontendUserRepository->update($frontendUser);
             $this->objectManager->get(PersistenceManager::class)->persistAll();
             $status = self::REGISTRATION_CONFIRMATION_SUCCESS;
+
+            // If set, log in the user automatically
+            if(intval($this->settings['feuser']['registration']['autologin'])) {
+                FrontendUserUtility::autoLogin($frontendUser->getUid());
+            }
+
         } else {
             $status = self::REGISTRATION_CONFIRMATION_ERROR;
         }

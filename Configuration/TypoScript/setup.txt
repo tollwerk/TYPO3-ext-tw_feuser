@@ -21,6 +21,7 @@ plugin.tx_twuser {
                 groupUid = {$plugin.tx_twuser.settings.feuser.registration.groupUid}
                 pluginPid = {$plugin.tx_twuser.settings.feuser.registration.pluginPid}
                 confirmPid = {$plugin.tx_twuser.settings.feuser.registration.confirmPid}
+                autologin = {$plugin.tx_twuser.settings.feuser.registration.autologin}
             }
         }
 

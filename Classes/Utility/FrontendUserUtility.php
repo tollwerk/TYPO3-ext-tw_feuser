@@ -68,7 +68,7 @@ class FrontendUserUtility implements SingletonInterface
      */
     protected function createRegistrationCode(FrontendUser $frontendUser)
     {
-        return md5($frontendUser->getEmail().$frontendUser->getUid().time());
+        return md5($frontendUser->getEmail() . $frontendUser->getUid() . time());
     }
 
     /**
@@ -128,15 +128,15 @@ class FrontendUserUtility implements SingletonInterface
 
             // Automatically process all values left inside $properties
             foreach ($properties as $propertyName => $propertyValue) {
-                $method = 'set'.ucfirst($propertyName);
-                if(!is_callable([$frontendUser, $method])){
+                $method = 'set' . ucfirst($propertyName);
+                if (!is_callable([$frontendUser, $method])) {
                     continue;
                 }
                 $frontendUser->{$method}($propertyValue);
             }
 
             // Create and/or set password
-            if(isset($properties['password'])) {
+            if (isset($properties['password'])) {
                 $password = $properties['password'];
                 unset($properties['password']);
             } else {
@@ -204,15 +204,16 @@ class FrontendUserUtility implements SingletonInterface
      *
      * @return bool
      */
-    public function updateFrontendUser(FrontendUser $frontendUser = null, array $properties = []) : bool {
-        if(!$frontendUser){
+    public function updateFrontendUser(FrontendUser $frontendUser = null, array $properties = []): bool
+    {
+        if (!$frontendUser) {
             return false;
         }
 
         // Automatically process all values inside $properties
         foreach ($properties as $propertyName => $propertyValue) {
-            $method = 'set'.ucfirst($propertyName);
-            if(!is_callable([$frontendUser, $method])){
+            $method = 'set' . ucfirst($propertyName);
+            if (!is_callable([$frontendUser, $method])) {
                 continue;
             }
             $frontendUser->{$method}($propertyValue);
@@ -233,5 +234,21 @@ class FrontendUserUtility implements SingletonInterface
         }
         $frontendUser = $this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
         return $frontendUser ?: null;
+    }
+
+    /**
+     * Automatically login an a FrontendUser
+     *
+     * @param int $frontendUserId
+     * @throws \ReflectionException
+     */
+    public static function autoLogin(int $frontendUserId): void
+    {
+        $GLOBALS['TSFE']->fe_user->checkPid = 0;
+        $userRecord = $GLOBALS['TSFE']->fe_user->getRawUserByUid($frontendUserId);
+        $GLOBALS['TSFE']->fe_user->createUserSession($userRecord);
+        $setSessionCookieMethod = new \ReflectionMethod($GLOBALS['TSFE']->fe_user, 'setSessionCookie');
+        $setSessionCookieMethod->setAccessible(true);
+        $setSessionCookieMethod->invoke($GLOBALS['TSFE']->fe_user);
     }
 }
