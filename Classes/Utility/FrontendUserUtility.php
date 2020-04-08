@@ -115,37 +115,38 @@ class FrontendUserUtility implements SingletonInterface
             // Create frontend user object
             /** @var FrontendUser $frontendUser */
             $frontendUser = $this->objectManager->get(FrontendUser::class);
-            $frontendUser->setUsername($username);
-            $frontendUser->setEmail($email);
-            $frontendUser->setPid($this->settings['feuser']['registration']['pid']);
-            $frontendUser->setDisabled(true);
-
-            // Add FrontendUserGroup
-            $userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['feuser']['registration']['groupUid']);
-            if ($userGroup) {
-                $frontendUser->addUsergroup($userGroup);
-            }
-
-            // Automatically process all values left inside $properties
-            foreach ($properties as $propertyName => $propertyValue) {
-                $method = 'set' . ucfirst($propertyName);
-                if (!is_callable([$frontendUser, $method])) {
-                    continue;
-                }
-                $frontendUser->{$method}($propertyValue);
-            }
-
-            // Create and/or set password
-            if (isset($properties['password'])) {
-                $password = $properties['password'];
-                unset($properties['password']);
-            } else {
-                $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
-            }
-            $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($password));
-            $this->frontendUserRepository->add($frontendUser);
-            $this->persistenceManager->persistAll();
         }
+
+        // Set basic properties
+        $frontendUser->setUsername($username);
+        $frontendUser->setEmail($email);
+        $frontendUser->setPid($this->settings['feuser']['registration']['pid']);
+        $frontendUser->setDisabled(true);
+
+        // Add FrontendUserGroup
+        $userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['feuser']['registration']['groupUid']);
+        if ($userGroup) {
+            $frontendUser->addUsergroup($userGroup);
+        }
+
+        // Automatically process all values left inside $properties
+        foreach ($properties as $propertyName => $propertyValue) {
+            $method = 'set' . ucfirst($propertyName);
+            if (!is_callable([$frontendUser, $method])) {
+                continue;
+            }
+            $frontendUser->{$method}($propertyValue);
+        }
+
+        // Create and/or set password
+        if (isset($properties['password'])) {
+            $password = $properties['password'];
+            unset($properties['password']);
+        } else {
+            $password = GeneralUtility::makeInstance(PasswordUtility::class)->createPassword();
+        }
+        $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($password));
+        $this->frontendUserRepository->add($frontendUser);
 
         // Set registration confirmation code and update user
         $frontendUser->setRegistrationCode($this->createRegistrationCode($frontendUser));
@@ -153,6 +154,19 @@ class FrontendUserUtility implements SingletonInterface
         $this->persistenceManager->persistAll();
 
         // Send confirmation email
+        $this->sendConfirmationEmail($frontendUser, $password);
+        return true;
+    }
+
+    /**
+     * Send registration confirmation email to user
+     *
+     * @param FrontendUser $frontendUser
+     * @param string $password
+     * @return int
+     */
+    public function sendConfirmationEmail(FrontendUser $frontendUser, string $password): int
+    {
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $confirmationUri = $uriBuilder
             ->reset()
@@ -167,9 +181,12 @@ class FrontendUserUtility implements SingletonInterface
                 'TwUser',
                 'FeuserRegistration'
             );
+
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
+
+        /** @var EmailUtility $emailUtility */
         $emailUtility = $this->objectManager->get(EmailUtility::class, $this->settings['email']['senderName'], $this->settings['email']['senderAddress']);
-        $emailUtility->send(
+        return $emailUtility->send(
             [$frontendUser->getEmail()],
             LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
             $standaloneRenderer->render(
@@ -195,7 +212,6 @@ class FrontendUserUtility implements SingletonInterface
                 'Plaintext'
             )
         );
-        return true;
     }
 
     /**

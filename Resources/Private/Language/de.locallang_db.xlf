@@ -66,6 +66,16 @@
                 <target>Absender Name</target>
             </trans-unit>
 
+            <!-- Debugging -->
+            <trans-unit id="debug">
+                <source>Debugging</source>
+                <target>Debugging</target>
+            </trans-unit>
+            <trans-unit id="debug.feuserUid">
+                <source>feuser uid</source>
+                <target>feuser uid</target>
+            </trans-unit>
+
             <!-- Validation -->
             <trans-unit id="validation">
                 <source>Validation</source>
@@ -96,6 +106,12 @@
             <trans-unit id="plugin.feuser.password">
                 <source>tollwerk User | Change password</source>
                 <target>tollwerk User | Passwort ändern</target>
+            </trans-unit>
+
+            <!-- Plugin: Debug -->
+            <trans-unit id="plugin.debug">
+                <source>tollwerk User | Debug</source>
+                <target>tollwerk User | Debug</target>
             </trans-unit>
         </body>
     </file>

@@ -32,6 +32,12 @@ call_user_func(
             'LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:plugin.feuser.password',
             'EXT:tw_user/Resources/Public/Icons/Backend/FrontendUser.svg'
         );
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+            'Tollwerk.TwUser',
+            'Debug',
+            'LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:plugin.debug',
+            'EXT:tw_user/Resources/Public/Icons/Backend/Bug.svg'
+        );
 
         // Register flexforms for plugins
         $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['twuser_feuserregistration'] = 'pi_flexform';

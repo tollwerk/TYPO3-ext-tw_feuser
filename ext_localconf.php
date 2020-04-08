@@ -28,6 +28,12 @@ call_user_func(
             ['FrontendUser' => 'password'],
             ['FrontendUser' => 'password']
         );
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'Tollwerk.TwUser',
+            'Debug',
+            ['Debug' => 'index, confirmationEmail'],
+            ['Debug' => 'index, confirmationEmail']
+        );
 
         // Exclude parameters from cacheHash calculation
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] =  'tx_twuser_feuserregistration[code]';

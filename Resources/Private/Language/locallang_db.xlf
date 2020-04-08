@@ -50,6 +50,14 @@
                 <source>Sender Name</source>
             </trans-unit>
 
+            <!-- Debugging -->
+            <trans-unit id="debug">
+                <source>Debugging</source>
+            </trans-unit>
+            <trans-unit id="debug.feuserUid">
+                <source>feuser uid</source>
+            </trans-unit>
+
             <!-- Validation -->
             <trans-unit id="validation">
                 <source>Validation</source>
@@ -74,6 +82,11 @@
             <!-- Plugin: FeuserPassword -->
             <trans-unit id="plugin.feuser.password">
                 <source>tollwerk User | Change password</source>
+            </trans-unit>
+
+            <!-- Plugin: Debug -->
+            <trans-unit id="plugin.debug">
+                <source>tollwerk User | Debug</source>
             </trans-unit>
         </body>
     </file>

@@ -3,6 +3,7 @@
 # customsubcategory=feuser=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:feuser
 # customsubcategory=email=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:email
 # customsubcategory=validation=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:validation
+# customsubcategory=debug=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:debug
 
 plugin.tx_twuser {
     persistence {
@@ -25,6 +26,11 @@ plugin.tx_twuser {
             senderAddress =
             # cat=plugin.tx_twuser/email/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:email.senderName
             senderName =
+        }
+
+        debug {
+            # cat=plugin.tx_twuser/debug/0010; type=string; label=LLL:EXT:tw_user/Resources/Private/Language/locallang_db.xlf:debug.feuserUid
+            feuserUid = 1
         }
 
         feuser {

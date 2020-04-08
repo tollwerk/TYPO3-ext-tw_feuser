@@ -25,6 +25,10 @@ plugin.tx_twuser {
             }
         }
 
+        debug {
+            feuserUid = {$plugin.tx_twuser.settings.debug.feuserUid}
+        }
+
         validation {
             password {
                 minLength = {$plugin.tx_twuser.settings.validation.password.minLength}

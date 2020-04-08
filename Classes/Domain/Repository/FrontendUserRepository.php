@@ -32,6 +32,20 @@ use Tollwerk\TwUser\Domain\Model\FrontendUser;
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 {
     /**
+     * @param $uid
+     * @return FrontendUser|null
+     */
+    public function findByUidNoRestrictions($uid)
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+
+        $frontendUser = $query->matching($query->equals('uid', $uid))->execute();
+        return $frontendUser->count() ? $frontendUser->current() : null;
+    }
+
+    /**
      * @param string $username
      * @param bool $ignoreEnableFields
      *
