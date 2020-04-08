@@ -204,7 +204,7 @@ class FrontendUserUtility implements SingletonInterface
      */
     public function createConfirmationEmailBody(FrontendUser $frontendUser, string $password, string $confirmationUri): array
     {
-        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class);
+        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class, 'TwUser');
         return [
             'html' => $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
