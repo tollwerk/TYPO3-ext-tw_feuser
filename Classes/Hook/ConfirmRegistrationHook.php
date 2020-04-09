@@ -45,6 +45,7 @@ interface ConfirmRegistrationHook
      * confirmed with the double-opt-in code.
      *
      * @param string $status
+     * @param FrontendUser $frontendUser
      */
-    public function confirmRegistrationHook(string $status): void;
+    public function confirmRegistrationHook(string $status, FrontendUser $frontendUser): void;
 }

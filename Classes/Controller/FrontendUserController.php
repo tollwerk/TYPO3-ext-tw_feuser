@@ -76,7 +76,6 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         // Find and activate the FrontendUser for this $code
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
         if ($frontendUser) {
-
             $frontendUser->setDisabled(false);
             $this->frontendUserRepository->update($frontendUser);
             $this->objectManager->get(PersistenceManager::class)->persistAll();
@@ -100,7 +99,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
                     1556279202
                 );
             }
-            $_procObj->confirmRegistrationHook($status);
+            $_procObj->confirmRegistrationHook($status, $frontendUser);
         }
 
         $this->forward('registration', null, null, [
