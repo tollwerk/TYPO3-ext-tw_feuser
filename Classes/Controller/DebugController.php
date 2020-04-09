@@ -78,7 +78,7 @@ class DebugController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function indexAction(string $statusMessage = null, string $html = null)
     {
         $this->view->assignMultiple([
-            'frontendUser' => $this->frontendUserRepository->findByUidNoRestrictions(82),
+            'frontendUser' => $this->frontendUserRepository->findByUidNoRestrictions($this->settings['debug']['feuserUid']),
             'statusMessage' => $statusMessage,
             'html' => $html,
         ]);
