@@ -147,6 +147,8 @@ class FrontendUserUtility implements SingletonInterface
         }
         $frontendUser->setPassword(GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE')->getHashedPassword($password));
         $this->frontendUserRepository->add($frontendUser);
+        $this->persistenceManager->persistAll();
+
 
         // Set registration confirmation code and update user
         $frontendUser->setRegistrationCode($this->createRegistrationCode($frontendUser));
