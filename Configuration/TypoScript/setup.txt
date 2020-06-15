@@ -11,8 +11,9 @@ plugin.tx_twuser {
 
     settings {
         email {
-            senderAddress = {$plugin.tx_twuser.settings.email.senderAddress}
             senderName = {$plugin.tx_twuser.settings.email.senderName}
+            senderAddress = {$plugin.tx_twuser.settings.email.senderAddress}
+            adminAddress  = {$plugin.tx_twuser.settings.email.adminAddress}
         }
 
         feuser {
@@ -22,6 +23,7 @@ plugin.tx_twuser {
                 pluginPid = {$plugin.tx_twuser.settings.feuser.registration.pluginPid}
                 confirmPid = {$plugin.tx_twuser.settings.feuser.registration.confirmPid}
                 autologin = {$plugin.tx_twuser.settings.feuser.registration.autologin}
+                sendAdminEmail = {$plugin.tx_twuser.settings.feuser.registration.sendAdminEmail}
             }
         }
 

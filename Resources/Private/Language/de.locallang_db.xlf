@@ -53,6 +53,10 @@
                 <source>Registration | Automatic login on confirmation</source>
                 <target>Registrierung | Auto-Login bei Registrierungs-Bestätigung</target>
             </trans-unit>
+            <trans-unit id="feuser.registration.sendAdminEmail">
+                <source>Registration | Send email to admin upon successful registration</source>
+                <target>Registrierung | E-Mail an Admin bei erfolgreicher Registrierung</target>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
                 <target>E-Mail</target>
@@ -64,6 +68,10 @@
             <trans-unit id="email.senderName">
                 <source>Sender Name</source>
                 <target>Absender Name</target>
+            </trans-unit>
+            <trans-unit id="email.adminAddress">
+                <source>Admin email address</source>
+                <target>Admin E-Mail-Adresse</target>
             </trans-unit>
 
             <!-- Debugging -->

@@ -30,6 +30,7 @@ namespace Tollwerk\TwUser\Controller;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\ConfirmRegistrationHook;
 use Tollwerk\TwUser\Hook\RegistrationFormHook;
+use Tollwerk\TwUser\Utility\AdminUtility;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -53,6 +54,9 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     /** @var FrontendUserRepository */
     protected $frontendUserRepository = null;
 
+    /** @var AdminUtility */
+    protected $adminUtility = null;
+
     /**
      * Inject the frontendUser repository
      *
@@ -64,6 +68,16 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     }
 
     /**
+     * Inject the AdminUtility
+     *
+     * @param AdminUtility $adminUtility
+     */
+    public function injectAdminUtility(AdminUtility $adminUtility): void
+    {
+       $this->adminUtility = $adminUtility;
+    }
+
+    /**
      * Process the registration double-opt-in confirmation code.
      * Enable the FrontendUser if everything is valid. Then,
      * forward or redirect to somehere else
@@ -71,7 +85,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $code
      */
-    public function confirmRegistrationAction(string $code) : void
+    public function confirmRegistrationAction(string $code): void
     {
         // Find and activate the FrontendUser for this $code
         $frontendUser = $this->frontendUserRepository->findOneByRegistrationCode($code);
@@ -82,12 +96,17 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
             $status = self::REGISTRATION_CONFIRMATION_SUCCESS;
 
             // If set, log in the user automatically
-            if(intval($this->settings['feuser']['registration']['autologin'])) {
+            if (intval($this->settings['feuser']['registration']['autologin'])) {
                 FrontendUserUtility::autoLogin($frontendUser->getUid());
             }
 
         } else {
             $status = self::REGISTRATION_CONFIRMATION_ERROR;
+        }
+
+        // Send admin email upon successful registration?
+        if ($this->settings['feuser']['registration']['sendAdminEmail']) {
+            $this->adminUtility->sendRegistrationAdminEmail($frontendUser);
         }
 
         // Hook for manipulating the registration confirmation
@@ -113,7 +132,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $status
      */
-    public function registrationAction(string $status = null) : void
+    public function registrationAction(string $status = null): void
     {
         switch ($status) {
             case self::REGISTRATION_SUBMITTED:
@@ -145,7 +164,7 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $status
      */
-    public function profileAction(string $status = null) : void
+    public function profileAction(string $status = null): void
     {
         switch ($status) {
             case self::PROFILE_UPDATE_SUCCESS:
@@ -170,9 +189,9 @@ class FrontendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      *
      * @param string $status
      */
-    public function passwordAction(string $status = null) : void
+    public function passwordAction(string $status = null): void
     {
-        switch ($status){
+        switch ($status) {
             case self::CHANGE_PASSWORD_SUCCESS:
                 $this->addFlashMessage(
                     LocalizationUtility::translate('feuser.password.status.success', 'TwUser'),

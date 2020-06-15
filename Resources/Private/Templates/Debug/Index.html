@@ -3,27 +3,49 @@
       xmlns:base="http://typo3.org/ns/Tollwerk/TwBase/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-    <h1>TwUser Debug</h1>
-    <f:debug inline="1" title="TwUser Settings">{settings}</f:debug>
-    <f:debug inline="1" title="Debug-FrontendUser">{frontendUser}</f:debug>
+    <style>
+        .TwUserDebug {
+            padding: 1rem;
+        }
+    </style>
 
-    <ul>
-        <li>
-            <f:link.action action="index">Back to index</f:link.action>
-        </li>
-        <li>
-            <f:link.action action="sendConfirmationEmail">Send registration confirmation Email</f:link.action>
-        </li>
-        <li>
-            <f:link.action action="showConfirmationEmail" arguments="{type: 'html'}">Show registration confirmation Email: HTML</f:link.action>
-        </li>
-        <li>
-            <f:link.action action="showConfirmationEmail" arguments="{type: 'plaintext'}">Show registration confirmation Email: Plaintext</f:link.action>
-        </li>
-    </ul>
+    <div class="TwUserDebug">
+        <h1>TwUser Debug</h1>
+        <f:debug inline="1" title="">{_all}</f:debug>
+        <p>
+            <f:link.action action="index">Index</f:link.action>
+        </p>
 
-    <f:if condition="{html}">
-        <f:format.raw>{html}</f:format.raw>
-    </f:if>
+        <hr />
 
+        <h2>Send emails</h2>
+        <ul>
+            <li>
+                <f:link.action action="sendConfirmationEmail">Send registration confirmation email</f:link.action>
+            </li>
+            <li>
+                <f:link.action action="sendRegistrationAdminEmail">Send registration admin email</f:link.action>
+            </li>
+        </ul>
+
+        <hr />
+
+        <h2>Show email contents</h2>
+        <ul>
+            <li>
+                <f:link.action action="showConfirmationEmail" arguments="{type: 'html'}">Show registration confirmation email: HTML</f:link.action>
+            </li>
+            <li>
+                <f:link.action action="showConfirmationEmail" arguments="{type: 'plaintext'}">Show registration confirmation email: Plaintext</f:link.action>
+            </li>
+            <li>
+                <f:link.action action="showRegistrationAdminEmail">Show registration admin email</f:link.action>
+            </li>
+        </ul>
+
+        <f:if condition="{html}">
+            <hr />
+            <f:format.raw>{html}</f:format.raw>
+        </f:if>
+    </div>
 </html>

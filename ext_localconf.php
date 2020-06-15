@@ -31,7 +31,7 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Tollwerk.TwUser',
             'Debug',
-            ['Debug' => 'index, showConfirmationEmail, sendConfirmationEmail'],
+            ['Debug' => 'index, showConfirmationEmail, sendConfirmationEmail, sendRegistrationAdminEmail, sendRegistrationAdminEmail, showRegistrationAdminEmail'],
             ['Debug' => 'index, showConfirmationEmail, sendConfirmationEmail']
         );
 

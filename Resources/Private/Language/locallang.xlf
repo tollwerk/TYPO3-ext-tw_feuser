@@ -38,6 +38,9 @@
                 <source>Sorry, but there was an error. Please contact us directly if this keeps happening.
                 </source>
             </trans-unit>
+            <trans-unit id="feuser.registration.adminEmail.subject">
+                <source>Ein neuer Benutzer hat sich registriert</source>
+            </trans-unit>
             <trans-unit id="feuser.registration.email.subject">
                 <source>Please confirm your registration</source>
             </trans-unit>

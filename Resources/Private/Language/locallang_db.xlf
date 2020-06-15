@@ -40,6 +40,9 @@
             <trans-unit id="feuser.registration.autologin">
                 <source>Registration | Automatic login on confirmation</source>
             </trans-unit>
+            <trans-unit id="feuser.registration.sendAdminEmail">
+                <source>Registration | Send email to admin upon successful registration</source>
+            </trans-unit>
             <trans-unit id="email">
                 <source>Email</source>
             </trans-unit>
@@ -48,6 +51,9 @@
             </trans-unit>
             <trans-unit id="email.senderName">
                 <source>Sender Name</source>
+            </trans-unit>
+            <trans-unit id="email.adminAddress">
+                <source>Admin email address</source>
             </trans-unit>
 
             <!-- Debugging -->
