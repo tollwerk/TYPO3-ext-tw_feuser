@@ -66,6 +66,7 @@ class PasswordFormFactory extends AbstractFormFactory
         $form->setRenderingOption('controllerAction', 'password');
         $form->setRenderingOption('submitButtonLabel', $this->translate('feuser.password.form.submit'));
         $form->setRenderingOption('elementClassAttribute', 'UserPassword__form Form');
+        $form->setRenderingOption('section', $this->identifier);
 
         // Create page and form fields
         $page = $form->createPage('password');
