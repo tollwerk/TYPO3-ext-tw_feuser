@@ -40,6 +40,7 @@ use Tollwerk\TwUser\Controller\FrontendUserController;
 use Tollwerk\TwUser\Domain\Model\FrontendUser;
 use Tollwerk\TwUser\Domain\Repository\FrontendUserRepository;
 use Tollwerk\TwUser\Hook\ProfileFinisherHook;
+use Tollwerk\TwUser\Utility\AdminUtility;
 use Tollwerk\TwUser\Utility\FrontendUserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -91,6 +92,11 @@ class ProfileFinisher extends RedirectFinisher
         // Update the frontend user
         $frontendUserUtility = GeneralUtility::makeInstance(FrontendUserUtility::class);
         $updateStatus = $frontendUserUtility->updateFrontendUser($frontendUser, $frontendUserProperties) ? FrontendUserController::PROFILE_UPDATE_SUCCESS : FrontendUserController::PROFILE_UPDATE_ERROR;
+
+        // Send admin email
+        /** @var AdminUtility $adminUtility */
+        $adminUtility = GeneralUtility::makeInstance(AdminUtility::class);
+        $adminUtility->sendProfileChangeAdminEmail($frontendUser);
 
         // Redirect
         $settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TwUser');

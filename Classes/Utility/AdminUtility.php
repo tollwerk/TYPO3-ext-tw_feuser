@@ -90,6 +90,22 @@ class AdminUtility implements SingletonInterface
     }
 
     /**
+     * Send admin email notification upon successful FrontendUser registration
+     *
+     * @param FrontendUser $frontendUser
+     */
+    public function sendProfileChangeAdminEmail(FrontendUser $frontendUser)
+    {
+        /** @var EmailUtility $emailUtility */
+        $emailUtility = $this->objectManager->get(EmailUtility::class, $this->settings['email']['senderName'], $this->settings['email']['senderAddress']);
+        return $emailUtility->send(
+            [$this->settings['email']['adminAddress']],
+            LocalizationUtility::translate('feuser.profile.update.adminEmail.subject', 'TwUser'),
+            $this->createProfileChangeAdminEmailBody($frontendUser)
+        );
+    }
+
+    /**
      * Create email body for admin notification upon successful FrontendUser registration
      *
      * @param FrontendUser $frontendUser
@@ -99,6 +115,21 @@ class AdminUtility implements SingletonInterface
         $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class, 'TwUser');
         return $standaloneRenderer->render(
             'Email/Admin/Registration',
+            [
+                'user' => $frontendUser,
+            ]
+        );
+    }
+
+    /**
+     * Create email body for admin notification if user changes profile data
+     * @param FrontendUser $frontendUser
+     * @return mixed
+     */
+    public function createProfileChangeAdminEmailBody(FrontendUser $frontendUser) {
+        $standaloneRenderer = $this->objectManager->get(StandaloneRenderer::class, 'TwUser');
+        return $standaloneRenderer->render(
+            'Email/Admin/ProfileChange',
             [
                 'user' => $frontendUser,
             ]

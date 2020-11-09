@@ -45,6 +45,10 @@
                 <source>We are sorry but there was an error. Please contact us directly if this keeps happening.</source>
                 <target>Es tut uns leid, aber bei Ihrer Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal oder kontaktieren Sie uns direkt. Vielen Dank für Ihr Verständnis.</target>
             </trans-unit>
+            <trans-unit id="feuser.registration.adminEmail.subject">
+                <source>A new user signed up</source>
+                <target>Ein neuer Benutzer hat sich registriert</target>
+            </trans-unit>
             <trans-unit id="feuser.registration.email.subject">
                 <source>Please confirm your registration</source>
                 <target>Bitte bestätigen Sie Ihre Registrierung</target>
@@ -133,6 +137,10 @@ Wenn Sie sich doch nicht mehr registrieren möchten, können Sie diese E-Mail ei
             <trans-unit id="feuser.profile.status.update.error.title">
                 <source>Sorry but there was an error updating your profile.</source>
                 <target>Entschuldigung, aber Ihr Profil konnte nicht erfolgreich aktualisiert werden.</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.update.adminEmail.subject">
+                <source>A user updated his profile</source>
+                <target>Ein Benutzer hat seine Konto aktualisiert</target>
             </trans-unit>
 
             <!-- Change password -->

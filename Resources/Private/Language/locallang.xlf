@@ -39,7 +39,7 @@
                 </source>
             </trans-unit>
             <trans-unit id="feuser.registration.adminEmail.subject">
-                <source>Ein neuer Benutzer hat sich registriert</source>
+                <source>A new user signed up</source>
             </trans-unit>
             <trans-unit id="feuser.registration.email.subject">
                 <source>Please confirm your registration</source>
@@ -97,6 +97,9 @@
             </trans-unit>
             <trans-unit id="feuser.profile.status.update.error.title">
                 <source>Sorry, but there was an error updating your profile.</source>
+            </trans-unit>
+            <trans-unit id="feuser.profile.update.adminEmail.subject">
+                <source>A user changed his profile</source>
             </trans-unit>
 
             <!-- Change password -->
