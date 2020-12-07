@@ -26,8 +26,9 @@
                 <source>Repeat password</source>
             </trans-unit>
             <trans-unit id="feuser.registration.form.terms" approved="yes">
-                <source>I hereby confirm to have read and agreed to the %s and the %s</source>
-                <target state="translated">Ich bestätige, die %s und %s zur Kenntnis genommen zu haben und stimme zu.</target>
+                <source>
+                    <![CDATA[I hereby confirm that I have read and understood your <a href="%s" target="_blank">Terms & Conditions</a> and your <a href="%s" target="_blank">Privacy Policy</a> and that I agree to both.]]>
+                </source>
             </trans-unit>
 
             <trans-unit id="feuser.registration.form.submit">
@@ -87,6 +88,10 @@
 
                     If you do not wish to register anymore you can simply ignore this message.
                 </source>
+            </trans-unit>
+
+            <trans-unit id="feuser.registration.form.email.error" approved="yes">
+                <source>Email address already registered</source>
             </trans-unit>
         </body>
     </file>

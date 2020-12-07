@@ -56,7 +56,7 @@ class RegistrationFormFactory extends AbstractFormFactory
      * The configuration array is factory-specific; for example a YAML or JSON factory
      * could retrieve the path to the YAML / JSON file via the configuration array.
      *
-     * @param array $configuration  factory-specific configuration array
+     * @param array  $configuration factory-specific configuration array
      * @param string $prototypeName The name of the "PrototypeName" to use; it is factory-specific to implement this.
      *
      * @return FormDefinition a newly built form definition
@@ -81,27 +81,38 @@ class RegistrationFormFactory extends AbstractFormFactory
             $form->setRenderingOption('actionUri', $configuration['actionUri']);
         }
         // Create page and form fields
-        $page  = $form->createPage('registration');
+        $page = $form->createPage('registration');
 
         $firstName = $page->createElement('firstName', 'Text');
         $firstName->setLabel($this->translate('feuser.registration.form.firstName'));
         $firstName->addValidator($this->objectManager->get(NotEmptyValidator::class));
-        $firstName->setProperty('fluidAdditionalAttributes', ['required' => 'required']);
+        $firstName->setProperty('fluidAdditionalAttributes',
+            [
+                'required'     => 'required',
+                'maxLength'    => 50,
+                'autocomplete' => 'given-name'
+            ]);
         $firstName->isRequired(true);
 
         $lastName = $page->createElement('lastName', 'Text');
         $lastName->setLabel($this->translate('feuser.registration.form.lastName'));
         $lastName->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $lastName->setProperty('fluidAdditionalAttributes',
+            [
+                'maxLength'    => 50,
+                'autocomplete' => 'family-name'
+            ]);
         $lastName->isRequired(true);
 
         $email = $page->createElement('email', 'Email');
         $email->setLabel($this->translate('feuser.registration.form.email'));
         $email->addValidator($this->objectManager->get(NotEmptyValidator::class));
+        $email->setProperty('fluidAdditionalAttributes', ['maxLength' => 50, 'autocomplete' => 'email']);
         $email->isRequired(true);
         if (empty($this->settings['debug']['enable'])) {
             $email->addValidator($this->objectManager->get(UniqueObjectValidator::class, [
                 'table'     => 'fe_users',
-                'fieldname' => 'username',
+                'fieldname' => 'username'
             ]));
         }
 
@@ -110,6 +121,9 @@ class RegistrationFormFactory extends AbstractFormFactory
         $password->setLabel($this->translate('feuser.registration.form.password'));
         $password->setProperty('confirmationLabel', $this->translate('feuser.registration.form.repeatPassword'));
         $password->isRequired(true);
+        $password->setProperty('fluidAdditionalAttributes', [
+            'autocomplete' => 'new-password'
+        ]);
 
         $privacy = $page->createElement('terms', 'Checkbox');
         $privacy->setProperty('containerClassAttribute', 'FormCheckbox FormCheckbox--terms');
@@ -129,7 +143,7 @@ class RegistrationFormFactory extends AbstractFormFactory
             ]
         ]);
         $privacy->addValidator($this->objectManager->get(NotEmptyValidator::class));
-
+        $privacy->isRequired(true);
 
         // Add the override configuration as hidden parameter
         $orc = $page->createElement('orc', 'Hidden');
@@ -145,7 +159,7 @@ class RegistrationFormFactory extends AbstractFormFactory
         if (empty($configuration['actionUri'])) {
             $form->createFinisher('Redirect', [
                 'pageUid'              => $GLOBALS['TSFE']->id,
-                'additionalParameters' => 'tx_twuser_feuserregistration[status]='.FrontendUserController::REGISTRATION_SUBMITTED
+                'additionalParameters' => 'tx_twuser_feuserregistration[status]=' . FrontendUserController::REGISTRATION_SUBMITTED
             ]);
         } else {
             $redirectUrl   = parse_url($configuration['actionUri']);
@@ -165,7 +179,7 @@ class RegistrationFormFactory extends AbstractFormFactory
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tw_user']['frontendUserRegistrationForm'] ?? [] as $className) {
             $_procObj = GeneralUtility::makeInstance($className);
             if (!($_procObj instanceof FrontendUserHookInterface)) {
-                throw new Exception('The registered class '.$className.' for hook [ext/tw_user][frontendUserRegistrationForm] does not implement the FrontendUserHookInterface',
+                throw new Exception('The registered class ' . $className . ' for hook [ext/tw_user][frontendUserRegistrationForm] does not implement the FrontendUserHookInterface',
                     1556283898);
             }
             $_procObj->frontendUserRegistrationForm($form, $configuration);

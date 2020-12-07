@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-04-17T10:00:00Z"
+          product-name="tw_user">
+        <header/>
+        <body>
+            <trans-unit id="feuser.registration.form.email" approved="yes">
+                <source>Email</source>
+                <target state="translated">Correo electrónico</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.firstName" approved="yes">
+                <source>First name</source>
+                <target state="translated">Nombre de pila</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.lastName" approved="yes">
+                <source>Last name</source>
+                <target state="translated">Apellido</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.email.placeholder" approved="yes">
+                <source>john@doe.com</source>
+                <target state="translated">fulano@detal.com</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.terms.label" approved="yes">
+                <source>Terms and privacy disclaimer</source>
+                <target state="translated">Reconocimiento de la declaración de protección de datos y condiciones de
+                    alquiler
+                </target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.password" approved="yes">
+                <source>Password</source>
+                <target state="translated">Contraseña</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.repeatPassword" approved="yes">
+                <source>Repeat password</source>
+                <target state="translated">Repita la contraseña</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.form.terms" approved="yes">
+                <source>
+                    <![CDATA[I hereby confirm that I have read and understood your <a href="%s" target="_blank">Terms & Conditions</a> and your <a href="%s" target="_blank">Privacy Policy</a> and that I agree to both.]]>
+                </source>
+                <target>
+                    <![CDATA[Confirmo haber tomado conocimiento de la <a href="%s" target="_blank">información relativa a las Condiciones comerciales generales</a> y a la <a href="%s" target="_blank">Protección de datos</a> y estar de acuerdo con las mismas.]]>
+                </target>
+            </trans-unit>
+
+            <trans-unit id="feuser.registration.form.submit" approved="yes">
+                <source>Register now</source>
+                <target state="translated">Regístrate ahora</target>
+            </trans-unit>
+            <trans-unit id="feuser.profile.form.submit" approved="yes">
+                <source>Save changes</source>
+                <target state="translated">Gracias por su registro</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.submitted.title">
+                <source>Thank you for registering</source>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.submitted.message" approved="yes">
+                <source>We have sent you an email. Please click on the confirmation link inside to finish your
+                    registration.
+                </source>
+                <target state="translated">Te enviamos un mensaje de correo electrónico. Por favor, vaya a la URL de
+                    confirmación en el mensaje para completar su registro.
+                </target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.success.title" approved="yes">
+                <source>Registration confirmed</source>
+                <target state="translated">Registro confirmado</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.success.message" approved="yes">
+                <source>Thank you for confirming your registration. You can now sign in to the website.</source>
+                <target state="translated">Muchas gracias por su registro. Ahora puedes entrar en el sitio web.</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.error.title" approved="yes">
+                <source>Registration error</source>
+                <target state="translated">Error durante el registro</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.status.error.message" approved="yes">
+                <source>We are sorry but there was an error. Please contact us directly if this keeps happening.
+                </source>
+                <target state="translated">Lo sentimos, pero ha habido un error. Por favor, inténtelo de nuevo y póngase
+                    en contacto con nosotros directamente si el error persiste.
+                </target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.email.subject" approved="yes">
+                <source>Please confirm your registration</source>
+                <target state="translated">Por favor, confirme su registro</target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.email.body.html" approved="no">
+                <source>&lt;p&gt;Thank your for registering. Please confirm your registration by clicking on the
+                    following link:&lt;/p&gt; &lt;blockquote&gt; &lt;a href="%s" target="_blank"&gt;%s&lt;/a&gt; &lt;/blockquote&gt;
+                    &lt;p&gt;After that you can sign in with the following credentials:&lt;/p&gt; &lt;blockquote&gt;
+                    &lt;strong&gt;Username:&lt;/strong&gt; %s&lt;br /&gt; &lt;strong&gt;Password:&lt;/strong&gt; %s &lt;/blockquote&gt;
+                    &lt;p&gt;If you do not wish to register anymore you can simply ignore this message.&lt;/p&gt;
+                </source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="feuser.registration.email.body.plaintext" approved="no">
+                <source>Please confirm your registration by clicking on the following link: %s After that you can sign
+                    in with the following credentials: Username: %s Password: %s If you do not wish to register anymore
+                    you can simply ignore this message.
+                </source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="feuser.registration.form.email.error" approved="yes">
+                <source>Email address already registered</source>
+                <target state="translated">Dirección de correo electrónico ya asignada
+                </target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

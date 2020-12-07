@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(
-    function() {
+    function () {
         // Configure plugins
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Tollwerk.TwUser',
@@ -23,6 +23,9 @@ call_user_func(
         // Exclude parameters from cacheHash calculation
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_twuser_feuserregistration[code]';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['user']      = ['Tollwerk\\TwUser\\ViewHelpers'];
+
+        // Hooks
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699] = \Tollwerk\TwUser\Hook\FormElementHooks::class;
     }
 );
 

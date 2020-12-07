@@ -1,6 +1,6 @@
 <?php
 /**
- * NDF
+ * User
  *
  * @category   typo3conf
  * @package    typo3conf\ext

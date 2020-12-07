@@ -208,7 +208,7 @@ class FrontendUserUtility implements SingletonInterface
 
         return !!$emailUtility->send(
             $recipient,
-            LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser'),
+            trim(LocalizationUtility::translate('feuser.registration.email.subject', 'TwUser')),
             $standaloneRenderer->render(
                 'Email/FrontendUser/Registration',
                 [
